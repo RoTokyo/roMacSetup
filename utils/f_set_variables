@@ -1,0 +1,49 @@
+clear
+
+# check for internet connection
+if nc -dzw1 8.8.8.8 443 &>/dev/null && echo | openssl s_client -connect 8.8.8.8:443 2>&1 | awk '
+  handshake && $1 == "Verification" { if ($2=="OK") exit; exit 1 }
+  $1 $2 == "SSLhandshake" { handshake = 1 }'
+	then
+  	INTCONN=0
+  	echo '';  _f_alert_info '  Internet connection established! '
+  else
+  	INTCONN=1
+  	echo '';  _f_alert_warning '  Unable to connect ... some functions unabled! '
+fi
+
+# check for xCode
+if [[ "$(type -P gcc)" && "$OSTYPE" =~ ^darwin || "$(type -P make)" ]]; then
+	CHKXCODE=0
+	_f_alert_info '  xCode present! '
+	else
+		CHKXCODE=1
+		_f_alert_info '  xCode not installed! '
+	fi
+
+# check for Homebrew
+if [[ $(which brew) ]]; then
+	CHKBREW=0
+	_f_alert_info '  Homebrew present! '
+	else
+		CHKBREW=1
+		_f_alert_info '  Homebrew not installed! '
+	fi
+
+# check for Cask
+if [[ $(brew info cask 2>/dev/null) ]]; then
+	CHKCASK=0
+	_f_alert_info '  Cask present! '
+	else
+		CHKCASK=1
+			_f_alert_info '  Cask not installed! '
+	fi
+
+# check for Atom
+	if [ -e /Applications/Atom.app ]; then
+		CHKATOM=0
+		_f_alert_info '  Atom present! '
+		else
+			CHKATOM=1
+			_f_alert_info '  Atom not installed! '
+		fi

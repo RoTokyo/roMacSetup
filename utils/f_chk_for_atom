@@ -1,0 +1,27 @@
+
+_install_brew () {
+
+  local THISNAME='Homebrew'
+
+  _f_alert_check "Checking for ${THISNAME} ..."
+  if [[ ! $(which brew) ]]; then
+    _f_alert_check "Checking for OSX Command Line Tools ..."
+    if [[ ! "$(type -P gcc)" && "$OSTYPE" =~ ^darwin ]]; then
+      _f_installCommandLineTools
+      _f_alert_success "Command Line Tools for XCode installed"
+    fi
+
+    /usr/bin/ruby -e "$(curl -k -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    _f_alert_success "${THISNAME} installed"
+  else
+    _f_alert_notice "${THISNAME} present"
+    read -p "$(_f_alert_warning "Do you want to update? [yN]")" -n 1
+    echo ''
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+      _f_alert_info "brew update"; brew update
+    fi
+  fi
+
+}
+
+_install_brew

@@ -1,0 +1,14 @@
+# Set Colors
+
+GREEN=$(tput setaf 64)
+MAGENTA=$(tput setaf 125)
+ORANGE=$(tput setaf 166)
+PURPLE=$(tput setaf 61)
+RED=$(tput setaf 1)
+RESET=$(tput sgr0)
+TAN=$(tput setaf 3)
+
+#purple=$(tput setaf 171)
+#green=$(tput setaf 76)
+#blue=$(tput setaf 38)
+#underline=$(tput sgr 0 1)
