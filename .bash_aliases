@@ -4,15 +4,16 @@
 
 # ****** Navigation Commands ***
 alias m='cd /Users/rc/Projects'
-alias k='cd /Users/rc/Projects/KaF'
-alias j='cd /Users/rc/Projects/macSetup'
+alias k='cd /Users/rc/Projects/roTokyo'
+alias j='cd /Users/rc/Projects/roMacSetup'
 
 # ****** jekyll Commands *********
-alias jc='bundle exec jekyll clean; rm -rf .sass-cache'
-alias jb='JEKYLL_ENV=production bundle exec jekyll build --config _config.yml'
-alias jm='npm run htmlm; npm run cssap; npm run csscl; npm run jsugl'
-alias jd='jc; jb; jm; ~/bin/zz-rsync_dest_to_server.sh'
-alias js='bundle exec jekyll serve'
+alias jx='bundle exec jekyll clean; rm -rf .sass-cache'
+alias jb='JEKYLL_ENV=production bundle exec jekyll build'
+alias js='JEKYLL_ENV=development bundle exec jekyll serve --incremental'
+alias jp='JEKYLL_ENV=production  bundle exec jekyll serve'
+alias wd='$HOME/bin/zz-write-draft.sh'
+alias up='jb && cd ~/bin && ./zz-rsync_dest_to_server.sh && cd ~/Sites && gitacom "Web upload" && gitpom'
 
 # ****** System ****************
 alias show='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
