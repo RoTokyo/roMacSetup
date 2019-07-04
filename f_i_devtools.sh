@@ -42,7 +42,7 @@ function _installDevTools() {
           esac
         fi
       else
-        _f_alert_notice "${ORANGE}${PKG^^}${RESET} already installed ... "
+        _f_alert_notice "${ORANGE}${PKG}${RESET} already installed ... "
         source utils/f_chk_for_packages
       fi
     done

@@ -13,7 +13,7 @@ _installAtom() {
 
 	local THISNAME='Atom & Packages'
 	local PKG='atom'
-	local APMPKGS=( mamimo atom-beautify atom-wrap-in-tag file-icons less-than-slash markdown-writer open-recent pigments selector-to-tag)
+	local APMPKGS=( atom-beautify atom-wrap-in-tag file-icons less-than-slash markdown-writer open-recent pigments selector-to-tag)
 
   if [[ CHKXCODE=0 && CHKBREW=0 ]]; then
     _f_alert_check "Checking for ${THISNAME} to install ..."
@@ -28,7 +28,7 @@ _installAtom() {
         _f_alert_success "${APM} Installed"
         done
       else
-        _f_alert_info "${ORANGE}${PKG^^}${RESET} already installed ... "
+        _f_alert_info "${ORANGE}${PKG}${RESET} already installed ... "
         source utils/f_chk_for_packages
       fi
     else

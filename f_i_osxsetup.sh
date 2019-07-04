@@ -40,7 +40,18 @@ _installOSXsetup() {
 		/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user
 		# Disable auto-correct
 		defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+		# Always show scroll bars
+		defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
+		# Show all filename extensions in Finder by default
+		defaults write NSGlobalDomain AppleShowAllExtensions -bool false
+		# Avoid creation of .DS_Store files on network volumes
+    defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 
+# * Language
+    defaults write NSGlobalDomain AppleLanguages -array "it"
+    defaults write NSGlobalDomain AppleLocale -string "it_IT@currency=EUR"
+    defaults write NSGlobalDomain AppleMeasurementUnits -string "Centimeters"
+    defaults write NSGlobalDomain AppleMetricUnits -bool true
 
 # * Screen
 		# System Preferences > Desktop & Screen Saver > Start after: Never
@@ -54,21 +65,45 @@ _installOSXsetup() {
 		chflags nohidden ~/Library
 		# Show the /Volumes folder
 		# sudo chflags nohidden /Volumes
+    # Show icons for hard drives, servers, and removable media on the desktop
+    defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
+    defaults write com.apple.finder ShowHardDrivesOnDesktop -bool true
+    defaults write com.apple.finder ShowMountedServersOnDesktop -bool true
+    defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
+    #
+		defaults write com.apple.finder NewWindowTarget -string "PfHm"
+		defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}"
+    # Finder: show status bar
+    defaults write com.apple.finder ShowStatusBar -bool true
+    # Finder: show path bar
+    defaults write com.apple.finder ShowPathbar -bool true
+
+# * Terminal
+    # Stop “Resume” feature
+    defaults write com.apple.Terminal NSQuitAlwaysKeepsWindows -bool false
 
 # * Dock
 		# System Preferences > Dock > Automatically hide and show the Dock:
 		defaults write com.apple.dock autohide -bool true
-
 		# System Preferences > Dock > Show indicators for open applications
 		defaults write com.apple.dock show-process-indicators -bool true
 
 # * Trackpad
 		# System Preferences > Trackpad > Tap to click
 		defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+    defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+    defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+    defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+    # Disable “natural” (Lion-style) scrolling
+    defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
 
 # * Photos
+    # Save screenshots in JPG format (other options: BMP, GIF, JPG, PDF, TIFF)
 		# Prevent Photos from opening automatically when devices are plugged in
-		defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
+		defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool false
+    # Save screenshots to the desktop
+    defaults write com.apple.screencapture location -string "$HOME/Desktop"
+		defaults write com.apple.screencapture type jpg
 
 # * iMail
 		# Disable signing emails by default
