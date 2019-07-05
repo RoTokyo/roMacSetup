@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+
+# **********************************
+# *                                *
+# *          Caffeinate            *
+# *                                *
+#***********************************
+#
+
+_alert() {
+
+  ORANGE=$(tput setaf 166)
+	RED=$(tput setaf 1)
+	RESET=$(tput sgr0)
+	TAN=$(tput setaf 3)
+
+	if [[ "${1}" = "info" || "${1}" = "notice" ]];    then local COLOR=""; fi
+	if [[ "${1}" = "input" ]];   then local COLOR="${RED}"; fi
+	if [[ "${1}" = "success" ]]; then local COLOR="${TAN}"; fi
+	if [[ "${1}" = "warning" ]]; then local COLOR="${RED}"; fi
+	if [[ "${1}" = "menu" ]];    then local COLOR="${ORANGE}"; fi
+
+	echo -e "${COLOR}$(printf "[%9s]" "${1}") ${MESSAGE}${RESET}"
+}
+
+_f_alert_info ()      { local MESSAGE="${*}"; echo "$(_alert info)"; }
+_f_alert_input ()     { local MESSAGE="${*}"; echo "$(_alert input)"; }
+_f_alert_notice ()    { local MESSAGE="${*}"; echo "$(_alert notice)"; }
+_f_alert_menu()       { local MESSAGE="${*}"; echo "$(_alert menu)"; }
+_f_alert_success ()   { local MESSAGE="${*}"; echo "$(_alert success)"; }
+_f_alert_warning ()   { local MESSAGE="${*}"; echo "$(_alert warning)"; }
+
+_byby() {
+  cat <<_EOF_
+
+[     exit]
+
+_EOF_
+	read -p "$(_f_alert_input 'Press any button to EXIT ⧳ ')" -n 1
+	unset ORIGIN DESTINATION
+	clear
+	exit
+}
+
+_menu () {
+
+	local readonly DELAY=2
+
+	while [[ $REPLY != 0 ]]; do
+		clear && echo ''
+  	cat <<_EOF_
+  Some caffeine not to sleep! :
+    1. caffeinate (simple)
+    2. caffeinate ... insert time (in seconds)
+    3. caffeinate ... display
+    4. caffeinate ... system from iddle sleeping
+    5. caffeinate ... system sleeping (only with AC power)
+
+    0. eXit
+
+_EOF_
+  	read -p "Enter selection [0-5] > "
+  	if [[ ${REPLY} =~ ^[0-5]$ ]]; then
+    	if [[ ${REPLY} == 0 ]]; then
+        echo ''; _f_alert_menu '  eXit Installation Routine! Wait ...'; echo ''
+      	sleep ${DELAY}
+				clear
+    	fi
+    	if [[ ${REPLY} == 1 ]]; then
+        clear
+      	echo '';  _f_alert_menu '  1. caffeinate (simple) '; echo ''
+        caffeinate
+    	fi
+    	if [[ ${REPLY} == 2 ]]; then
+        clear
+      	echo '';  _f_alert_menu '  2. caffeinate ... insert time (in seconds) '; echo ''
+				read -p "$(_f_alert_input 'Insert an integer between 1 and 3599 ⧳ ')" TIME
+				echo "${TIME}"
+				if [[ "${TIME}" =~ ^[0-9]* && "${TIME}" -gt 0 && "${TIME}" -le 3600 ]]
+					then
+						caffeinate -t ${TIME}
+					else
+						_f_alert_warning 'A valid integer between 1 and 3599 ... please!'
+						read -p "$(_f_alert_input 'Press any button to EXIT ⧳ ')" -n 1
+				fi
+    	fi
+    	if [[ ${REPLY} == 3 ]]; then
+        clear
+      	echo '';  _f_alert_menu '  3. caffeinate ... display '; echo ''
+				caffeinate -d
+    	fi
+    	if [[ ${REPLY} == 4 ]]; then
+        clear
+      	echo '';  _f_alert_menu '  4. caffeinate ... system from iddle sleeping '; echo ''
+				caffeinate -1
+    	fi
+    	if [[ ${REPLY} == 5 ]]; then
+        clear
+      	echo '';  _f_alert_menu '  5. caffeinate ... system sleeping (only with AC power) '; echo ''
+				caffeinate -s
+    	fi
+    	else
+        _f_alert_warning '  Invalid entry! Wait ...'
+      	sleep ${DELAY}
+  	fi
+	done
+  unset DELAY REPLY
+}
+
+_menu
+_byby

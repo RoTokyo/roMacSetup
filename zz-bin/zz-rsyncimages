@@ -15,17 +15,23 @@ readonly DESTINATION="/Volumes/RobKazData/Immagini/Giappone/"
 function _one () {
   unset REPLY
 	_f_alert_notice "File in sincro: Some files may be deleted!"; echo ''
-	_f_rsync_images --dry-run --delete; echo ''
-	seek_confirmation "Do you want to syncronize? ... [yN]"
-	if is_confirmed
-		then
-		  _f_rsync_images --delete
-			_f_alert_success "Routine executed!"
-			read -p "$(_f_alert_input 'Press any button to EXIT ⧳ ')" -n 1
+	if [[ -d ${ORIGIN} && -d ${DESTINATION} ]]
+	  then
+	    _f_rsync_images --dry-run --delete; echo ''
+	    seek_confirmation "Do you want to syncronize? ... [yN]"
+	    if is_confirmed
+		    then
+		      _f_rsync_images --delete
+			    _f_alert_success "Routine executed!"
+			    read -p "$(_f_alert_input 'Press any button to EXIT ⧳ ')" -n 1
+		    else
+			    _f_alert_info "Routine aborted"
+			    read -p "$(_f_alert_input 'Press any button to EXIT ⧳ ')" -n 1
+		  fi
 		else
-			_f_alert_info "Routine aborted"
+		  _f_alert_warning "ORIGIN or DESTINATION directory NOT found"
 			read -p "$(_f_alert_input 'Press any button to EXIT ⧳ ')" -n 1
-		fi
+	fi
 }
 
 _f_rsync_images () {
