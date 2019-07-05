@@ -1,0 +1,149 @@
+#!/usr/bin/env bash
+
+# **********************************
+# *                                *
+# *   Syncronize WebServer Files   *
+# *                                *
+#***********************************
+#
+
+readonly PROGNAME="$(basename $0)"
+readonly PROGPATH="$(dirname $0)"
+readonly ORIGIN="/Users/rc/Projects/roTokyo/dest/"
+readonly DESTINATION="/Users/rc/Sites/"
+readonly IMAGES="/Users/rc/Projects/roTokyo/source/assets/images/"
+readonly FAVICO="/Users/rc/Projects/roTokyo/source/assets/favicon/"
+
+
+
+function _main () {
+  unset REPLY
+	_f_alert_notice "File in sincro: Some files may be deleted!"; echo ''
+	_f_rsync_file --dry-run --delete; echo ''
+	_f_rsync_images --dry-run --delete; echo ''
+	_f_rsync_favicon --dry-run --delete; echo ''
+	seek_confirmation "Do you want to syncronize? ... [yN]"
+	if is_confirmed
+		then
+		  _f_rsync_file --delete
+		  _f_rsync_images --delete
+		  _f_rsync_favicon --delete
+			_f_alert_success "Routine executed!"
+			read -p "$(_f_alert_input 'Press any button to EXIT ⧳ ')" -n 1
+		else
+			_f_alert_info "Routine aborted"
+			read -p "$(_f_alert_input 'Press any button to EXIT ⧳ ')" -n 1
+		fi
+}
+
+_f_rsync_file () {
+	rsync "$@" \
+		--exclude '.git/' \
+		--exclude '.DS_Store' \
+		--exclude 'Icon?' \
+		--exclude '*.sh' \
+		--exclude 'assets/favicon' \
+		--exclude 'assets/images' \
+		-zavh --no-perms --protect-args ${ORIGIN} ${DESTINATION};
+}
+
+_f_rsync_images () {
+	rsync "$@" \
+		--exclude '.git/' \
+		--exclude '.DS_Store' \
+		--exclude 'Icon?' \
+		--exclude '*.sh' \
+		-zavh --no-perms --protect-args ${IMAGES} ${DESTINATION}/assets/images;
+}
+
+_f_rsync_favicon () {
+	rsync "$@" \
+		--exclude '.git/' \
+		--exclude '.DS_Store' \
+		--exclude 'Icon?' \
+		--exclude '*.sh' \
+		-zavh --no-perms --protect-args ${FAVICO} ${DESTINATION}/assets/favicon;
+}
+
+function seek_confirmation() {
+  #input "$@"
+  read -p "$(_f_alert_input "$@")" -n 1
+  echo ""
+}
+
+function is_confirmed() {
+  if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
+    return 0
+  fi
+  return 1
+}
+
+_alert() {
+
+  ORANGE=$(tput setaf 166)
+	RED=$(tput setaf 1)
+	RESET=$(tput sgr0)
+	TAN=$(tput setaf 3)
+
+	if [[ "${1}" = "info" || "${1}" = "notice" ]];    then local COLOR=""; fi
+	if [[ "${1}" = "input" ]];   then local COLOR="${RED}"; fi
+	if [[ "${1}" = "success" ]]; then local COLOR="${TAN}"; fi
+	if [[ "${1}" = "warning" ]]; then local COLOR="${RED}"; fi
+	if [[ "${1}" = "menu" ]];    then local COLOR="${ORANGE}"; fi
+
+	echo -e "${COLOR}$(printf "[%9s]" "${1}") ${MESSAGE}${RESET}"
+}
+
+_f_alert_info ()      { local MESSAGE="${*}"; echo "$(_alert info)"; }
+_f_alert_input ()     { local MESSAGE="${*}"; echo "$(_alert input)"; }
+_f_alert_notice ()    { local MESSAGE="${*}"; echo "$(_alert notice)"; }
+_f_alert_menu()       { local MESSAGE="${*}"; echo "$(_alert menu)"; }
+_f_alert_success ()   { local MESSAGE="${*}"; echo "$(_alert success)"; }
+_f_alert_warning ()   { local MESSAGE="${*}"; echo "$(_alert warning)"; }
+
+_byby() {
+  cat <<_EOF_
+
+[     exit]
+
+_EOF_
+	unset ORIGIN DESTINATION
+	clear
+	exit
+}
+
+_menu () {
+
+	local readonly DELAY=2
+
+	while [[ $REPLY != 0 ]]; do
+		clear && echo ''
+  	cat <<_EOF_
+  Sincronize file for internal web server:
+    1. start
+
+    0. eXit
+
+_EOF_
+  	read -p "Enter selection [0-1] > "
+  	if [[ ${REPLY} =~ ^[0-1]$ ]]; then
+    	if [[ ${REPLY} == 0 ]]; then
+        echo ''; _f_alert_menu '  eXit Installation Routine! Wait ...'; echo ''
+      	sleep ${DELAY}
+				clear
+    	fi
+    	if [[ ${REPLY} == 1 ]]; then
+        clear
+      	echo '';  _f_alert_menu '  1. start '; echo ''
+        _main
+    	fi
+    	else
+        _f_alert_warning '  Invalid entry! Wait ...'
+      	sleep ${DELAY}
+  	fi
+	done
+  unset DELAY REPLY
+}
+
+_menu
+_byby

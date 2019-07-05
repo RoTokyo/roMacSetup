@@ -3,6 +3,9 @@
 #*******************************
 
 #******* Path ******************
+export PATH="$HOME/bin:$PATH"
+export PATH="/usr/local/opt/imagemagick@6/bin:$PATH"
+export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 export PATH="/usr/local/opt/curl/bin:$PATH"
 export PATH="/usr/local/opt/ruby/bin:$PATH"
 export PATH="/usr/local/bin:$PATH"

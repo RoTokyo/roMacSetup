@@ -1,0 +1,304 @@
+#!/usr/bin/env bash
+
+# **********************************
+# *                                *
+# *   Prepare image files for web  *
+# *                                *
+#***********************************
+#
+
+ORIGINIMGPATH="${HOME}/Pictures/ZZ-images/AA-source/"
+DESTINIMGPATH="${HOME}/Pictures/ZZ-images/AA-destination/"
+
+function _roTokyo_image () {
+  unset REPLY
+  seek_confirmation "Insert jpg file name ... without extention ... :"
+  if is_confirmed
+    then
+    	_convert_1200
+			_convert_thumb
+	  	_convert_blur
+  fi
+  read -p "$(_f_alert_success 'Press any button to EXIT ⧳ ')" -n 1
+}
+
+function _blur_image () {
+  unset REPLY
+  seek_confirmation "Insert jpg file name ... without extention ... :"
+  if is_confirmed
+    then
+	  	_convert_blur
+  fi
+  read -p "$(_f_alert_success 'Press any button to EXIT ⧳ ')" -n 1
+}
+
+function _responsive_image () {
+  unset REPLY
+  seek_confirmation "Insert jpg file name ... without extention ... :"
+  if is_confirmed
+    then
+      if [[ $(identify -ping -format '%w' ${ORIGINIMGPATH}${REPLY}.jpg) -ge '1920' ]]; then
+				_convert_1920
+				_f_alert_info "File $REPLY-1920.jpg creato."
+				_convert_1600
+				_f_alert_info "File $REPLY-1600.jpg creato."
+				_convert_1366
+				_f_alert_info "File $REPLY-1366.jpg creato."
+				_convert_1024
+				_f_alert_info "File $REPLY-1024.jpg creato."
+				_convert_768
+				_f_alert_info "File $REPLY-768.jpg creato."
+				_convert_640
+				_f_alert_info "File $REPLY-640.jpg creato."
+			else
+				_f_alert_warning "Image file too small!"
+			fi
+			_convert_thumb
+	  	_f_alert_info "File $REPLY-thumb.jpg creato."
+	  	_convert_blur
+	  	_f_alert_info "File $REPLY-blur.jpg creato."
+  fi
+  read -p "$(_f_alert_success 'Press any button to EXIT ⧳ ')" -n 1
+}
+
+function _convert_1920 () {
+  convert \
+	${ORIGINIMGPATH}/${REPLY}.jpg \
+	-density 72 \
+	-scale 1920 \
+	-quality 85 \
+	-define jpeg:fancy-upsampling=off \
+	-unsharp 0.25x0.25+8+0.065 \
+	-dither None \
+	-interlace none \
+	-colorspace sRGB \
+	-strip \
+	${DESTINIMGPATH}/${REPLY}-1920.jpg
+}
+
+function _convert_1600 () {
+  convert \
+	${ORIGINIMGPATH}/${REPLY}.jpg \
+	-density 72 \
+	-scale 1600 \
+	-quality 85 \
+	-define jpeg:fancy-upsampling=off \
+	-unsharp 0.25x0.25+8+0.065 \
+	-dither None \
+	-interlace none \
+	-colorspace sRGB \
+	-strip \
+	${DESTINIMGPATH}/${REPLY}-1600.jpg
+}
+
+function _convert_1366 () {
+  convert \
+	${ORIGINIMGPATH}/${REPLY}.jpg \
+	-density 72 \
+	-scale 1366 \
+	-quality 85 \
+	-define jpeg:fancy-upsampling=off \
+	-unsharp 0.25x0.25+8+0.065 \
+	-dither None \
+	-interlace none \
+	-colorspace sRGB \
+	-strip \
+	${DESTINIMGPATH}/${REPLY}-1366.jpg
+}
+
+function _convert_1200 () {
+	if [[ $(identify -ping -format '%w' ${ORIGINIMGPATH}${REPLY}.jpg) -ge '1200' ]]
+    then
+			convert \
+			${ORIGINIMGPATH}/${REPLY}.jpg \
+			-resize 1200 \
+			-quality 85 \
+			-define jpeg:fancy-upsampling=off \
+			-unsharp 0.25x0.25+8+0.065 \
+			-dither None \
+			-interlace none \
+			-colorspace sRGB \
+			-strip \
+			${DESTINIMGPATH}/${REPLY}.jpg
+			_f_alert_info "File $REPLY.jpg creato."
+		else
+			_f_alert_warning "Image file too small!"
+	fi
+}
+
+function _convert_1024 () {
+  convert \
+	${ORIGINIMGPATH}/${REPLY}.jpg \
+	-density 72 \
+	-scale 1024 \
+	-quality 85 \
+	-define jpeg:fancy-upsampling=off \
+	-unsharp 0.25x0.25+8+0.065 \
+	-dither None \
+	-interlace none \
+	-colorspace sRGB \
+	-strip \
+	${DESTINIMGPATH}/${REPLY}-1024.jpg
+}
+
+function _convert_768 () {
+  convert \
+	${ORIGINIMGPATH}/${REPLY}.jpg \
+	-density 72 \
+	-scale 768 \
+	-quality 85 \
+	-define jpeg:fancy-upsampling=off \
+	-unsharp 0.25x0.25+8+0.065 \
+	-dither None \
+	-interlace none \
+	-colorspace sRGB \
+	-strip \
+	${DESTINIMGPATH}/${REPLY}-768.jpg
+}
+
+function _convert_640 () {
+  convert \
+	${ORIGINIMGPATH}/${REPLY}.jpg \
+	-density 72 \
+	-scale 640 \
+	-quality 85 \
+	-define jpeg:fancy-upsampling=off \
+	-unsharp 0.25x0.25+8+0.065 \
+	-dither None \
+	-interlace none \
+	-colorspace sRGB \
+	-strip \
+	${DESTINIMGPATH}/${REPLY}-640.jpg
+}
+
+function _convert_thumb () {
+  if [[ $(identify -ping -format '%w' ${ORIGINIMGPATH}${REPLY}.jpg) -ge '420' ]]
+    then
+      convert \
+	    ${ORIGINIMGPATH}/${REPLY}.jpg \
+	    -thumbnail 420x280 \
+	    -unsharp 0.25x0.25+8+0.065 \
+	    -dither None \
+	    -posterize 136 \
+	    -define jpeg:fancy-upsampling=off \
+	    -interlace none \
+	    -colorspace sRGB \
+	    -strip \
+	    ${DESTINIMGPATH}/${REPLY}-thumb.jpg
+	    _f_alert_info "File $REPLY-thumb.jpg creato."
+	  else
+	    _f_alert_warning "Image file too small!"
+	fi
+}
+
+function _convert_blur () {
+  if [[ $(identify -ping -format '%w' ${ORIGINIMGPATH}${REPLY}.jpg) -ge '24' ]]
+    then
+      convert \
+	    ${ORIGINIMGPATH}/${REPLY}.jpg \
+	    -thumbnail 24x16 \
+	    -filter Gaussian \
+	    -blur 0x8 \
+	    ${DESTINIMGPATH}/${REPLY}-blur.jpg
+	    _f_alert_info "File $REPLY-blur.jpg creato."
+	  else
+	    _f_alert_warning "Image file too small!"
+	fi
+}
+
+function seek_confirmation() {
+  read -p "$(_f_alert_input "$@")" REPLY
+  echo ''
+}
+
+function is_confirmed() {
+  if [[ "${REPLY}" != "" && -f "${ORIGINIMGPATH}${REPLY}.jpg" ]]; then
+    return 0
+  fi
+  _f_alert_warning "Enter a valid file name!"
+  return 1
+}
+
+_alert() {
+
+  ORANGE=$(tput setaf 166)
+	RED=$(tput setaf 1)
+	RESET=$(tput sgr0)
+	TAN=$(tput setaf 3)
+
+	if [[ "${1}" = "info" || "${1}" = "notice" ]];    then local COLOR=""; fi
+	if [[ "${1}" = "input" ]];   then local COLOR="${RED}"; fi
+	if [[ "${1}" = "success" ]]; then local COLOR="${TAN}"; fi
+	if [[ "${1}" = "warning" ]]; then local COLOR="${RED}"; fi
+	if [[ "${1}" = "menu" ]];    then local COLOR="${ORANGE}"; fi
+
+	echo -e "${COLOR}$(printf "[%9s]" "${1}") ${MESSAGE}${RESET}"
+}
+
+
+_f_alert_info ()      { local MESSAGE="${*}"; echo "$(_alert info)"; }
+_f_alert_input ()     { local MESSAGE="${*}"; echo "$(_alert input)"; }
+_f_alert_notice ()    { local MESSAGE="${*}"; echo "$(_alert notice)"; }
+_f_alert_menu()       { local MESSAGE="${*}"; echo "$(_alert menu)"; }
+_f_alert_success ()   { local MESSAGE="${*}"; echo "$(_alert success)"; }
+_f_alert_warning ()   { local MESSAGE="${*}"; echo "$(_alert warning)"; }
+
+_byby() {
+  cat <<_EOF_
+
+[     exit]
+
+_EOF_
+	read -p "$(_f_alert_input 'Press any button to EXIT ⧳ ')" -n 1
+	unset ORIGIN DESTINATION BASHFILES GITFILES VIMFILES OTHERFILES
+	clear
+	exit
+}
+
+_menu () {
+
+	local readonly DELAY=2
+
+	while [[ $REPLY != 0 ]]; do
+		clear && echo ''
+  	cat <<_EOF_
+  Image manipulation menu:
+    1. roTokyo image manipulation routine
+    2. blur image for web site
+    3. responsive images for web site
+
+    0. eXit
+
+_EOF_
+  	read -p "Enter selection [0-3] > "
+  	if [[ ${REPLY} =~ ^[0-3]$ ]]; then
+    	if [[ ${REPLY} == 0 ]]; then
+        echo ''; _f_alert_menu '  eXit Installation Routine! Wait ...'; echo ''
+      	sleep ${DELAY}
+				clear
+    	fi
+    	if [[ ${REPLY} == 1 ]]; then
+        clear
+      	echo '';  _f_alert_menu '  1. roTokyo image manipulation routine '; echo ''
+        _roTokyo_image
+    	fi
+    	if [[ ${REPLY} == 2 ]]; then
+        clear
+      	echo '';  _f_alert_menu '  2. blur image for web site '; echo ''
+        _blur_image
+    	fi
+    	if [[ ${REPLY} == 3 ]]; then
+        clear
+      	echo '';  _f_alert_menu '  3. responsive images for web site '; echo ''
+        _responsive_image
+    	fi
+    	else
+        _f_alert_warning '  Invalid entry! Wait ...'
+      	sleep ${DELAY}
+  	fi
+	done
+  unset DELAY REPLY
+}
+
+_menu
+_byby
