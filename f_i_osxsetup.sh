@@ -100,7 +100,8 @@ _installOSXsetup() {
 # * Photos
     # Save screenshots in JPG format (other options: BMP, GIF, JPG, PDF, TIFF)
 		# Prevent Photos from opening automatically when devices are plugged in
-		defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool false
+		defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
+		defaults -currentHost write com.apple.ImageCapture2 HotPlugActionPath ''
     # Save screenshots to the desktop
     defaults write com.apple.screencapture location -string "$HOME/Desktop"
 		defaults write com.apple.screencapture type jpg

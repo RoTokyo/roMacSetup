@@ -9,9 +9,11 @@
 
 
 ORIGIN="$( cd "$( dirname "${BASH_SOURCE[0]}" )" > /dev/null && pwd )"
-DESTINATION="${HOME}/Desktop/test/"
+DESTINATION="${HOME}/Desktop/test"
 BASHFILES=(".bash_profile" ".bash_prompt" ".bash_aliases" ".bash_export" ".bash_functions")
 GITFILES=(".gitattributes" ".gitconfig" ".gitignore")
+UTILITIESPATH='zz-bin'
+BIN="${HOME}/Desktop/test/bin"
 VIMFILES=(".vimrc" ".vim")
 OTHERFILES=(".editorconfig" ".hushlogin")
 
@@ -51,8 +53,35 @@ _installFiles () {
     fi
 
   done
-
 }
+
+_installUtilities () {
+  if [[ ! -d ${BIN} ]]
+    then
+      mkdir -p ${BIN}
+      _f_alert_info "${BIN} directory created"
+  fi
+  for file in ${ORIGIN}/${UTILITIESPATH}; do
+    #filename="${file##*/}"
+    echo ${file}
+    if [[ -L ${DESTINATION}/${BIN}/${filename} ]]
+      then
+        _f_alert_warning "Symlink ${filename} EXISTS ... "
+        seek_confirmation " ................................ overwrite? [yN]"
+        if is_confirmed; then
+          ln -sfn ${ORIGIN}/${UTILITIESPATH}/${filename} ${DESTINATION}/${BIN}
+          _f_alert_notice "${filename} symlink overwritten!"
+        fi
+      else
+        # ln -s ${ORIGIN}/${UTILITIESPATH}/${filename} ${DESTINATION}/${BIN}
+        echo ${ORIGIN}/${UTILITIESPATH}/${filename}
+         _f_alert_notice "${filename} symlink created!"
+    fi
+
+  done
+  read -p "$(_f_alert_input 'Press any button to CONTINUE ⧳ ')" -n 1
+}
+
 
 function seek_confirmation() {
   #input "$@"
@@ -111,19 +140,20 @@ _menu () {
 	while [[ $REPLY != 0 ]]; do
 		clear && echo ''
   	cat <<_EOF_
-  Installation routine:
+  Extra file installation routine:
     1. Install Bash Dot Files
     2. Install Git Profile Files
     3. Install Vim Profile Files (NOT READY YET)
     4. Install Other Profile Files
+    5. Install Utilities Files
 
     A. All
 
     0. eXit
 
 _EOF_
-  	read -p "Enter selection [0-9] > "
-  	if [[ $REPLY =~ ^[0-4]$ || $REPLY =~ ^[A]$ ]]; then
+  	read -p "Enter selection [0-5] > "
+  	if [[ $REPLY =~ ^[0-5]$ || $REPLY =~ ^[A]$ ]]; then
     	if [[ $REPLY == 0 ]]; then
         echo ''; _f_alert_menu '  eXit Installation Routine! Wait ...'; echo ''
       	sleep $DELAY
@@ -159,6 +189,11 @@ _EOF_
         clear
         echo ''; _f_alert_menu '  4. Install Other Profile Files '; echo ''
         _installFiles "${OTHERFILES[@]}"
+    	fi
+    	if [[ $REPLY == 5 ]]; then
+        clear
+        echo ''; _f_alert_menu '  5. Install Utilities Files '; echo ''
+        _installUtilities
     	fi
     	else
         _f_alert_warning '  Invalid entry! Wait ...'

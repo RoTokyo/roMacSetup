@@ -2,10 +2,25 @@
 
 # **********************************
 # *                                *
-# *          Caffeinate            *
+# *   Stop ADOBE auto-launching on login *
 # *                                *
 #***********************************
 #
+# https://apple.stackexchange.com/questions/138941/how-do-i-stop-the-adobe-creative-cloud-app-from-auto-launching-on-login/356217#356217
+# https://gist.github.com/WadeShuler/670a281c1c29ab1aebb94a21798db155
+
+function seek_confirmation() {
+  #input "$@"
+  read -p "$(_f_alert_input "$@")" -n 1
+  echo ""
+}
+
+function is_confirmed() {
+  if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
+    return 0
+  fi
+  return 1
+}
 
 _alert() {
 
@@ -49,18 +64,14 @@ _menu () {
 	while [[ $REPLY != 0 ]]; do
 		clear && echo ''
   	cat <<_EOF_
-  Some caffeine not to sleep! :
-    1. caffeinate (simple)
-    2. caffeinate ... insert time (in seconds)
-    3. caffeinate ... display
-    4. caffeinate ... system from iddle sleeping
-    5. caffeinate ... system sleeping (only with AC power)
+  Image manipulation menu:
+    1. stop ADOBE auto-launching on login
 
     0. eXit
 
 _EOF_
-  	read -p "Enter selection [0-5] > "
-  	if [[ ${REPLY} =~ ^[0-5]$ ]]; then
+  	read -p "Enter selection [0-1] > "
+  	if [[ ${REPLY} =~ ^[0-1]$ ]]; then
     	if [[ ${REPLY} == 0 ]]; then
         echo ''; _f_alert_menu '  eXit Installation Routine! Wait ...'; echo ''
       	sleep ${DELAY}
@@ -68,36 +79,11 @@ _EOF_
     	fi
     	if [[ ${REPLY} == 1 ]]; then
         clear
-      	echo '';  _f_alert_menu '  1. caffeinate (simple) '; echo ''
-        caffeinate
-    	fi
-    	if [[ ${REPLY} == 2 ]]; then
-        clear
-      	echo '';  _f_alert_menu '  2. caffeinate ... insert time (in seconds) '; echo ''
-				read -p "$(_f_alert_input 'Insert an integer between 1 and 3599 ⧳ ')" TIME
-				echo "${TIME}"
-				if [[ "${TIME}" =~ ^[0-9]* && "${TIME}" -gt 0 && "${TIME}" -le 3600 ]]
-					then
-						caffeinate -t ${TIME}
-					else
-						_f_alert_warning 'A valid integer between 1 and 3599 ... please!'
-						read -p "$(_f_alert_input 'Press any button to EXIT ⧳ ')" -n 1
-				fi
-    	fi
-    	if [[ ${REPLY} == 3 ]]; then
-        clear
-      	echo '';  _f_alert_menu '  3. caffeinate ... display '; echo ''
-				caffeinate -d
-    	fi
-    	if [[ ${REPLY} == 4 ]]; then
-        clear
-      	echo '';  _f_alert_menu '  4. caffeinate ... system from iddle sleeping '; echo ''
-				caffeinate -1
-    	fi
-    	if [[ ${REPLY} == 5 ]]; then
-        clear
-      	echo '';  _f_alert_menu '  5. caffeinate ... system sleeping (only with AC power) '; echo ''
-				caffeinate -s
+      	echo '';  _f_alert_menu '  stop ADOBE auto-launching on login '
+        launchctl unload -w {,~}/Library/LaunchAgents/com.adobe.*.plist
+        echo '';  _f_alert_notice 'PASSWORD required ... WAIT ...'; echo ''
+        sudo launchctl unload -w /Library/LaunchDaemons/com.adobe.*.plist
+        read -p "$(_f_alert_input 'Press any button to EXIT ⧳ ')" -n 1
     	fi
     	else
         _f_alert_warning '  Invalid entry! Wait ...'
