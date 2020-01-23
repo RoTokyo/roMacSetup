@@ -10,12 +10,36 @@
 readonly PROGNAME="$(basename $0)"
 readonly PROGPATH="$(dirname $0)"
 readonly ORIGIN="/Volumes/DiscoImmagini/immagini/Giappone/"
-readonly DESTINATION="/Volumes/RobKazData/Immagini/Giappone/"
+readonly DESTROBKAZDATA="/Volumes/RobKazData/Immagini/Giappone/"
+readonly DESTROBKAZHOME="/Volumes/RobKazHome/Immagini/Giappone/"
+
 
 function _one () {
   unset REPLY
 	_f_alert_notice "File in sincro: Some files may be deleted!"; echo ''
-	if [[ -d ${ORIGIN} && -d ${DESTINATION} ]]
+	if [[ -d ${ORIGIN} && -d ${DESTROBKAZDATA} ]]
+	  then
+	    _f_rsync_images --dry-run --delete; echo ''
+	    seek_confirmation "Do you want to syncronize? ... [yN]"
+	    if is_confirmed
+		    then
+		      _f_rsync_images --delete
+			    _f_alert_success "Routine executed!"
+			    read -p "$(_f_alert_input 'Press any button to EXIT ⧳ ')" -n 1
+		    else
+			    _f_alert_info "Routine aborted"
+			    read -p "$(_f_alert_input 'Press any button to EXIT ⧳ ')" -n 1
+		  fi
+		else
+		  _f_alert_warning "ORIGIN or DESTINATION directory NOT found"
+			read -p "$(_f_alert_input 'Press any button to EXIT ⧳ ')" -n 1
+	fi
+}
+
+function _two () {
+  unset REPLY
+	_f_alert_notice "File in sincro: Some files may be deleted!"; echo ''
+	if [[ -d ${ORIGIN} && -d ${DESTROBKAZHOME} ]]
 	  then
 	    _f_rsync_images --dry-run --delete; echo ''
 	    seek_confirmation "Do you want to syncronize? ... [yN]"
@@ -121,8 +145,7 @@ _EOF_
     	if [[ ${REPLY} == 2 ]]; then
         clear
       	echo '';  _f_alert_menu '  2. From Disk to RobKazHome (Time Capsule) '; echo ''
-				_f_alert_info "Not ready yet!"
-        read -p "$(_f_alert_input 'Press any KEY to EXIT ⧳ ')" -n 1
+        _two
     	fi
     	if [[ ${REPLY} == 3 ]]; then
         clear

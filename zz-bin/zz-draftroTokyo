@@ -7,13 +7,16 @@
 #***********************************
 #
 
+readonly WEBSITENAME="roTokyo"
 readonly DESTINATION="$HOME/Projects/roTokyo/source/_drafts/"
+readonly DRAFT__DATE=`date "+%Y-%m-%d"`
+readonly DRAFT__NAME="test"
+readonly    FILE_EXT=".md"
+readonly       DELAY="2"
 
 function _write () {
-  unset REPLY
-	seek_confirmation "Insert draft name:"
-	if is_confirmed
-		then
+
+
 echo "---
 published:   false
 title:
@@ -39,68 +42,32 @@ seo:
   description:
 
 sitemap:
-  lastmod: 
+  lastmod: ${DRAFT__DATE}
 
-date:
+date: ${DRAFT__DATE}
 
 ---
 {% capture imgpath %}{{site.baseurl}}{{site.imageurlpost}}{%endcapture%}
 
-" > $DESTINATION$REPLY
-			read -p "$(_f_alert_success 'Press any button to EXIT ⧳ ')" -n 1
-	  else
-	  	_f_alert_warning "Enter a valid file name!"
-		fi
+" > ${DESTINATION}${DRAFT__DATE}"-"${DRAFT__NAME}${FILE_EXT}
 }
 
-
-function seek_confirmation() {
-  #input "$@"
-  read -p "$(_f_alert_input "$@")" -n 1
-  echo ""
-}
-
-function is_confirmed() {
-  if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
-    return 0
+echo " Create a draft for ${WEBSITENAME}"
+read -p ' Enter file name (no extention) > '
+if [[ $REPLY ]]; then
+  if [[ -f ${DESTINATION}${DRAFT__DATE}"-"${DRAFT__NAME}${FILE_EXT} ]]; then
+    echo ' No, no, no! File already exist!'
+    echo ' Try again ... !'
+    else
+      _write
+      cd $DESTINATION
+      echo ' File created ...'
+      sleep $DELAY
+    fi
+  else
+    echo ' Name pleeeese!'
+    echo ' Do it again ... '
+    sleep $DELAY
   fi
-  return 1
-}
 
-_alert() {
-
-  ORANGE=$(tput setaf 166)
-	RED=$(tput setaf 1)
-	RESET=$(tput sgr0)
-	TAN=$(tput setaf 3)
-
-	if [[ "${1}" = "info" || "${1}" = "notice" ]];    then local COLOR=""; fi
-	if [[ "${1}" = "input" ]];   then local COLOR="${RED}"; fi
-	if [[ "${1}" = "success" ]]; then local COLOR="${TAN}"; fi
-	if [[ "${1}" = "warning" ]]; then local COLOR="${RED}"; fi
-	if [[ "${1}" = "menu" ]];    then local COLOR="${ORANGE}"; fi
-
-	echo -e "${COLOR}$(printf "[%9s]" "${1}") ${MESSAGE}${RESET}"
-}
-
-_f_alert_info ()      { local MESSAGE="${*}"; echo "$(_alert info)"; }
-_f_alert_input ()     { local MESSAGE="${*}"; echo "$(_alert input)"; }
-_f_alert_notice ()    { local MESSAGE="${*}"; echo "$(_alert notice)"; }
-_f_alert_menu()       { local MESSAGE="${*}"; echo "$(_alert menu)"; }
-_f_alert_success ()   { local MESSAGE="${*}"; echo "$(_alert success)"; }
-_f_alert_warning ()   { local MESSAGE="${*}"; echo "$(_alert warning)"; }
-
-_byby() {
-  cat <<_EOF_
-
-[     exit]
-
-_EOF_
-	read -p "$(_f_alert_input 'Press any button to EXIT ⧳ ')" -n 1
-	unset ORIGIN DESTINATION
-	clear
-	exit
-}
-
-_write
-_byby
+echo ' By by ... '

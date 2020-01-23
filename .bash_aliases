@@ -14,7 +14,7 @@ alias jb='k && JEKYLL_ENV=production bundle exec jekyll build'
 alias js='k && JEKYLL_ENV=development bundle exec jekyll serve --incremental'
 alias jp='k && JEKYLL_ENV=production  bundle exec jekyll serve'
 alias wd='$HOME/bin/zz-write-draft.sh'
-alias up='jb && ~/bin/zz-rsyncwebserver && cd ~/Sites && gitacom "Web upload" && gitpom && cd'
+alias up='jb && ~/bin/zz-rotokyofiles.sh && cd ~/Sites && gitacom "Web upload" && gitpom && cd'
 
 # ****** System ****************
 alias show='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
