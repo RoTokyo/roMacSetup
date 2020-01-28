@@ -9,12 +9,13 @@ alias k='cd $HOME/Projects/roTokyo'
 alias j='cd $HOME/Projects/roMacSetup'
 
 # ****** jekyll Commands *********
-alias jx='k && bundle exec jekyll clean; rm -rf .sass-cache'
-alias jb='k && JEKYLL_ENV=production bundle exec jekyll build'
-alias js='k && JEKYLL_ENV=development bundle exec jekyll serve --incremental'
-alias jp='k && JEKYLL_ENV=production  bundle exec jekyll serve'
-alias wd='$HOME/bin/zz-write-draft.sh'
+alias jx='bundle exec jekyll clean; rm -rf .sass-cache'
+alias jb='JEKYLL_ENV=production bundle exec jekyll build'
+alias js='JEKYLL_ENV=development bundle exec jekyll serve --incremental'
+alias jp='JEKYLL_ENV=production  bundle exec jekyll serve'
 alias up='jb && ~/bin/zz-rotokyofiles.sh && cd ~/Sites && gitacom "Web upload" && gitpom && cd'
+
+alias draft='j && cd zz-bin && ./zz-draftroTokyo'
 
 # ****** System ****************
 alias show='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
@@ -40,7 +41,7 @@ alias gitpom='git push -u origin master'
 alias gitlog='git log --pretty=oneline'
 
 # ****** npm Commands **********
-alias nl='npm ls --depth=0'
+
 
 # ****** Useful Commands *******
 alias la='ls -AF'                                        # Compact view, show hidden

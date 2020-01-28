@@ -9,8 +9,7 @@
 
 readonly WEBSITENAME="roTokyo"
 readonly DESTINATION="$HOME/Projects/roTokyo/source/_drafts/"
-readonly DRAFT__DATE=`date "+%Y-%m-%d"`
-readonly DRAFT__NAME="test"
+readonly DRAFT__DATE="$(date "+%Y-%m-%d")"
 readonly    FILE_EXT=".md"
 readonly       DELAY="2"
 
@@ -22,7 +21,7 @@ published:   false
 title:
 description:
 image:
-figCaption:  - © roTokyo
+figCaption: - © roTokyo
 itinerario:
 quando:
 giorno:
@@ -30,6 +29,12 @@ indirizzo:
 tags:
 
 youTubeId:
+
+map:
+  title:
+  latitude:
+  longitude:
+  markerimage:
 
 location:
   - title:
@@ -40,34 +45,88 @@ location:
 
 seo:
   description:
+  keywords:
+  excerpt:
 
 sitemap:
-  lastmod: ${DRAFT__DATE}
-
-date: ${DRAFT__DATE}
-
+  lastmod:
+  changefreq:
+  priority:
 ---
-{% capture imgpath %}{{site.baseurl}}{{site.imageurlpost}}{%endcapture%}
 
-" > ${DESTINATION}${DRAFT__DATE}"-"${DRAFT__NAME}${FILE_EXT}
+
+#### {{page.description}}
+{: .sottotitolo}
+
+### ITINERARIO
+{{page.quando}}
+{: .quando}
+Itinerario: {{page.itinerario}}
+{: .itinerario}
+{: style=\"margin-bottom: 2em;\"}
+
+
+### RACCONTO e MOSTRE
+{{page.itinerario}}
+{: .itinerario}
+{{page.giorno}}
+{: .itinerario}
+{: style=\"margin-bottom: 2em;\"}
+
+
+### TEMPIO e MOSTRE
+{{page.quando}}
+{: .quando}
+> {{page.indirizzo}}
+{: style=\"margin-bottom: 2em;\"}
+
+" > ${DESTINATION}${DRAFT__DATE}"-"${REPLY}${FILE_EXT}
 }
 
+echo ' '
 echo " Create a draft for ${WEBSITENAME}"
 read -p ' Enter file name (no extention) > '
 if [[ $REPLY ]]; then
-  if [[ -f ${DESTINATION}${DRAFT__DATE}"-"${DRAFT__NAME}${FILE_EXT} ]]; then
+  DRAFT_NAME="$REPLY"
+  if [[ -f ${DESTINATION}${DRAFT__DATE}"-"${DRAFT_NAME}${FILE_EXT} ]]; then
+    echo ' '
     echo ' No, no, no! File already exist!'
     echo ' Try again ... !'
+    echo ' '
     else
+      echo ' Creating file ...'
       _write
       cd $DESTINATION
-      echo ' File created ...'
       sleep $DELAY
+      echo ' '
+      read -p  " Do you want to open ${DRAFT_NAME}.md with ATOM? [yY]" -n 1
+      if [[ $REPLY =~ ^[Yy]$ ]]; then
+        atom "${DESTINATION}${DRAFT__DATE}-${DRAFT_NAME}${FILE_EXT}"; echo ''
+        echo ' '
+        fi
+      echo ' '
+      echo ' Thank you ... enjoy!'
     fi
   else
+    echo ' '
     echo ' Name pleeeese!'
     echo ' Do it again ... '
+    echo ' '
+    echo ' By ... by ... '
+    echo ' '
     sleep $DELAY
   fi
 
-echo ' By by ... '
+
+
+
+
+
+
+
+
+
+
+
+
+

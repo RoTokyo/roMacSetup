@@ -19,8 +19,8 @@
 ::1             localhost
 fe80::1%lo0	localhost
 
-127.0.0.1     roTokyo.io
-127.0.0.1     www.roTokyo.io
+# 127.0.0.1     roTokyo.io
+# 127.0.0.1     www.roTokyo.io
 
 #<block-file maker>
 127.0.0.1 productupdates.filemaker.com
