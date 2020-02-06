@@ -49,7 +49,7 @@ _EOF_
 
   	_f_alert_info "     Public IP: ${PUBDNS}"
   	_f_alert_info "     Hostname : ${HOSTNA}"
-  	
+
   	local PORTS=$(ifconfig -uv | grep '^[a-z0-9]' | awk -F : '{print $1}')
   	for IDX in $PORTS[@]; do
   		local ATTIVA=$(ifconfig -uv $IDX | grep 'status: ' | awk '{print $2}')
@@ -62,6 +62,7 @@ _EOF_
         	local DNSSERVER=$(ipconfig getpacket $IDX | grep 'domain_name_server (ip_mult):' | sed 's/.*domain_name_server (ip_mult): {\([^}]*\)}.*/\1/')
         	local MACADDRESS=$(ifconfig -uv $IDX | grep 'ether ' | awk '{print $2}')
         	local QUALITY=$(ifconfig -uv $IDX | grep 'link quality:' | awk '{print $3, $4}')
+        	local CONNECTED=$(arp -a)
 
 					_f_alert_network "              : ${LABEL}"
 
@@ -73,18 +74,20 @@ _EOF_
 								_f_alert_info "Authorisation : $(${AP} | grep "link auth" | awk '{print $3}' | tr '[:lower:]' '[:upper:]')"
 								_f_alert_info "Network Speed : $(${AP} | grep "lastTxRate:" | sed 's/.*: //' | sed 's/$/ Mbps/')"
 								fi
-							;;	
+							;;
           	*)
             	local NETWORKSPEED=$(ifconfig -uv $IDX | grep 'link rate:' | awk '{print $3, $4}')
             	_f_alert_info "Network Speed : $NETWORKSPEED"
         		esac
-        	
-        	_f_alert_info "   IP-address : $IPADDRESS"
-	        _f_alert_info "  Subnet Mask : $NETMASK"
-	        _f_alert_info "       Router : $ROUTER"
-	        _f_alert_info "   DNS Server : $DNSSERVER"
-	        _f_alert_info "  MAC-address : $MACADDRESS"
-	        _f_alert_info " Link quality : $QUALITY"
+
+        	_f_alert_info "       IP-address : $IPADDRESS"
+	        _f_alert_info "      Subnet Mask : $NETMASK"
+	        _f_alert_info "           Router : $ROUTER"
+	        _f_alert_info "       DNS Server : $DNSSERVER"
+	        _f_alert_info "      MAC-address : $MACADDRESS"
+	        _f_alert_info "     Link quality : $QUALITY"
+	        _f_alert_info " Device Cennected :"
+	        echo "$CONNECTED"
 
 					fi
   			else

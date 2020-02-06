@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 #
 # Open the web page to publish my andrew.cmu page.
 # For other cmu students, change the andrew id.
