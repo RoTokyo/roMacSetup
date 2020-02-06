@@ -1,0 +1,21 @@
+{
+  "name": "Kale",
+  "version": "0.0.1",
+  "description": "",
+  "homepage": "",
+  "author": "KazuBo",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/"
+  },
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "clean": "bundle exec jekyll clean && rm -rf .sass-cache",
+    "build": "JEKYLL_ENV=production bundle exec jekyll build --config _config.yml",
+    "start": "npm run clean && npm run build"
+  },
+  "dependencies": {
+    "npm": "^5.7.1"
+  }
+}

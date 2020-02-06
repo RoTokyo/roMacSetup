@@ -42,21 +42,17 @@ function _responsive_image () {
 				_f_alert_info "File $REPLY-1920.jpg creato."
 				_convert_1600
 				_f_alert_info "File $REPLY-1600.jpg creato."
-				_convert_1366
-				_f_alert_info "File $REPLY-1366.jpg creato."
-				_convert_1024
-				_f_alert_info "File $REPLY-1024.jpg creato."
-				_convert_768
-				_f_alert_info "File $REPLY-768.jpg creato."
+				_convert_1200
+				_f_alert_info "File $REPLY-1200.jpg creato."
+				_convert_800
+				_f_alert_info "File $REPLY-800.jpg creato."
 				_convert_640
 				_f_alert_info "File $REPLY-640.jpg creato."
-			else
-				_f_alert_warning "Image file too small!"
-			fi
-			_convert_thumb
-	  	_f_alert_info "File $REPLY-thumb.jpg creato."
-	  	_convert_blur
-	  	_f_alert_info "File $REPLY-blur.jpg creato."
+			  _convert_thumb
+	  	  _f_alert_info "File $REPLY-thumb.jpg creato."
+	  	  _convert_blur
+	  	  _f_alert_info "File $REPLY-blur.jpg creato."
+	  	fi
   fi
   read -p "$(_f_alert_success 'Press any button to EXIT ⧳ ')" -n 1
 }
@@ -91,21 +87,6 @@ function _convert_1600 () {
 	${DESTINIMGPATH}/${REPLY}-1600.jpg
 }
 
-function _convert_1366 () {
-  convert \
-	${ORIGINIMGPATH}/${REPLY}.jpg \
-	-density 72 \
-	-scale 1366 \
-	-quality 85 \
-	-define jpeg:fancy-upsampling=off \
-	-unsharp 0.25x0.25+8+0.065 \
-	-dither None \
-	-interlace none \
-	-colorspace sRGB \
-	-strip \
-	${DESTINIMGPATH}/${REPLY}-1366.jpg
-}
-
 function _convert_1200 () {
 	if [[ $(identify -ping -format '%w' ${ORIGINIMGPATH}${REPLY}.jpg) -ge '1200' ]]
     then
@@ -126,11 +107,11 @@ function _convert_1200 () {
 	fi
 }
 
-function _convert_1024 () {
+function _convert_800 () {
   convert \
 	${ORIGINIMGPATH}/${REPLY}.jpg \
 	-density 72 \
-	-scale 1024 \
+	-scale 800 \
 	-quality 85 \
 	-define jpeg:fancy-upsampling=off \
 	-unsharp 0.25x0.25+8+0.065 \
@@ -138,22 +119,7 @@ function _convert_1024 () {
 	-interlace none \
 	-colorspace sRGB \
 	-strip \
-	${DESTINIMGPATH}/${REPLY}-1024.jpg
-}
-
-function _convert_768 () {
-  convert \
-	${ORIGINIMGPATH}/${REPLY}.jpg \
-	-density 72 \
-	-scale 768 \
-	-quality 85 \
-	-define jpeg:fancy-upsampling=off \
-	-unsharp 0.25x0.25+8+0.065 \
-	-dither None \
-	-interlace none \
-	-colorspace sRGB \
-	-strip \
-	${DESTINIMGPATH}/${REPLY}-768.jpg
+	${DESTINIMGPATH}/${REPLY}-800.jpg
 }
 
 function _convert_640 () {

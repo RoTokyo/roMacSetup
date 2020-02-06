@@ -1,0 +1,26 @@
+---
+layout: null
+sitemap:
+  exclude: 'yes'
+---
+*
+*
+* Team:  {{site.author.team}} --- We are human! ... Do you?
+*
+*
+*  Creator:       {{site.author.creator}}
+*  Mail:          {{site.author.mail}}
+*  WebSite:       {{site.author.website}}
+*  Photo Gallery: {{site.author.photo}}
+*  Location:      {{site.author.location}}
+*
+*  Last updated: {{site.time}}
+*
+*  Language:     日本語, English, Italiano
+*  Built with:   Jekyll {{ jekyll.version }} <https://jekyllrb.com>
+*								 BBEdit <https://www.barebones.com>
+*								 Atom <https://https://atom.io/>
+*								 Skeleton <http://getskeleton.com/>
+*								 JPEGmini Lite <https://www.jpegmini.com>
+*								 Real Favicon Generator <https://realfavicongenerator.net>
+*

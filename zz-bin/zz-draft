@@ -8,7 +8,7 @@
 #
 
 readonly WEBSITENAME="roTokyo"
-readonly DESTINATION="$HOME/Projects/roTokyo/source/_drafts/"
+readonly DESTINATION="$HOME/Desktop/"
 readonly DRAFT__DATE="$(date "+%Y-%m-%d")"
 readonly    FILE_EXT=".md"
 readonly       DELAY="2"

@@ -4,18 +4,20 @@
 
 # ****** Navigation Commands ***
 alias b='cd $HOME/bin'
-alias m='cd $HOME/Projects'
-alias k='cd $HOME/Projects/roTokyo'
-alias j='cd $HOME/Projects/roMacSetup'
+alias p='cd $HOME/Projects'
+alias rot='cd $HOME/Projects/roTokyo'
+alias ms='cd $HOME/Projects/roMacSetup'
 
 # ****** jekyll Commands *********
 alias jx='bundle exec jekyll clean; rm -rf .sass-cache'
-alias jb='JEKYLL_ENV=production bundle exec jekyll build'
-alias js='JEKYLL_ENV=development bundle exec jekyll serve --incremental'
-alias jp='JEKYLL_ENV=production  bundle exec jekyll serve'
-alias up='jb && ~/bin/zz-rotokyofiles.sh && cd ~/Sites && gitacom "Web upload" && gitpom && cd'
 
-alias draft='j && cd zz-bin && ./zz-draftroTokyo'
+alias jd='JEKYLL_ENV=development bundle exec jekyll serve'
+alias jdi='JEKYLL_ENV=development bundle exec jekyll serve --incremental'
+
+alias jp='JEKYLL_ENV=production bundle exec jekyll build'
+alias jpi='JEKYLL_ENV=production bundle exec jekyll build --incremental'
+
+alias draft='j && cd zz-bin && ./zz-draft'
 
 # ****** System ****************
 alias show='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
@@ -40,8 +42,9 @@ alias gitpop='git push -u origin gh-pages'
 alias gitpom='git push -u origin master'
 alias gitlog='git log --pretty=oneline'
 
-# ****** npm Commands **********
+# ****** Ruby Gems Commands **********
 
+alias unallgems='for i in `gem list --no-versions`; do gem uninstall -aIx $i; done'
 
 # ****** Useful Commands *******
 alias la='ls -AF'                                        # Compact view, show hidden

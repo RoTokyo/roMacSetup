@@ -78,7 +78,7 @@ _EOF_
     	if [[ ${REPLY} == 1 ]]; then
         clear
       	echo '';  _f_alert_menu '  1. connect to KazuBo '; echo ''
-        ssh KazuBo@192.168.3.8
+        ssh KazuBo@192.168.3.6
     	fi
     	else
         _f_alert_warning '  Invalid entry! Wait ...'

@@ -9,8 +9,8 @@
 
 readonly PROGNAME="$(basename $0)"
 readonly PROGPATH="$(dirname $0)"
-readonly ORIGIN="/Users/rc/Projects/roTokyo/dest/"
-readonly DESTINATION="/Users/rc/Sites/"
+readonly ORIGIN="/Users/rc/Projects/roTokyo/wbsite/"
+readonly DESTINATION="/Users/rc/Sites/rotokyo/"
 readonly IMAGES="/Users/rc/Projects/roTokyo/source/assets/images/"
 readonly FAVICO="/Users/rc/Projects/roTokyo/source/assets/favicon/"
 

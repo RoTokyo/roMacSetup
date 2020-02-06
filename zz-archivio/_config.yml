@@ -1,0 +1,94 @@
+# Do not use TABS  in configuration files
+# This will either lead to parsing errors, or
+# Jekyll will revert to the default settings.
+# Use spaces instead.
+
+# Site settings ------------------------------------------------#####
+locale:            it_IT                           #Important for SEO
+excerpt_separator: <!--more-->
+imageurl:          /assets/images
+unpublished: false
+show_drafts: false
+future:      false
+
+#google-analytics-ua:
+
+# For site owner info use data.settings,yml --------------------#####
+
+# For site SEO info   use data.settings,yml --------------------#####
+
+# Site author and creator information and contacts -------------#####
+author:
+  team:      kazuRo
+  creator:   roTokyo
+  website:   rotokyo.github.io
+  photo:     www.flickr.com/photos/rotokyo/albums
+  mail:      roTokyo@icloud.com
+  location:  Tokyo, Japan
+
+# Build settings------------------------------------------------#####
+# http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone:    Japan/Tokyo
+markdown:    kramdown
+kramdown:
+  footnote_backlink: "⤴"
+highlighter: rouge
+host:
+url:                                               #Important for SEO
+port:
+source:      source
+destination: wbsite
+#incremental: true
+livereload:  true
+
+sass:
+  style:     expanded
+
+# Plugins ------------------------------------------------------#####
+plugins:
+  - jekyll-seo-tag
+  - jekyll-paginate
+  - jekyll-minifier
+  - jekyll-autoprefixer
+
+defaults:
+  -
+    scope:
+      path:   ''
+      type:   'pages'
+    values:
+      layout: 'page'
+      is_page: true
+  -
+    scope:
+      path:  '_posts'
+      type:   'posts'
+    values:
+      layout: 'post'
+      is_post: true
+
+#exclude:
+include:     ['_pages']
+exclude:     ['node_modules', 'gulpfile.js', 'package.json', 'yarn.lock', '*.sketch', '*.jade', '*.codekit']
+keep_files:  ['assets/images/*', 'assets/favicon', '.git']
+
+autoprefixer:
+  browsers:
+  - last 3 versions
+  only_production: true
+
+jekyll-minifier:
+  exclude: ['humans.txt', 'robots.txt', 'sitemap.xml']
+  preserve_php: false
+  remove_spaces_inside_tags: true
+  remove_multi_spaces: true
+  remove_comments: true
+  remove_intertag_spaces: true
+  remove_quotes: true
+  compress_css: true
+  compress_javascript: true
+  compress_json: true
+  collapse_whitespace: true
+  preserve_line_breaks: false       #preserve_line_breaks: true
+  simple_boolean_attributes: true   #simple_boolean_attributes: false
+  compress_js_templates: true       #compress_js_templates: false
