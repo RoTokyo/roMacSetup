@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+
+# **********************************
+# *                                *
+# *      png to jpg & minimize     *
+# *                                *
+#***********************************
+#
+# convert octocat.png   -background 'rgb(230, 46, 104)' -alpha background -flatten  png_sma.jpg
+
+
+_main_code () {
+
+	while [[ $REPLY != 'x' ]]; do
+		clear && echo ''
+  	cat <<_EOF_
+  Copy .png image to .jpg:
+
+    1. convert
+
+    x. eXit
+
+_EOF_
+
+  read -p "Enter selection [0-9] > "
+  if [[ $REPLY =~ ^[0-9]$ || $REPLY =~ ^[?]$  || $REPLY =~ ^[x]$ ]]; then
+
+  	if [[ $REPLY == 'x' ]]; then
+  		echo ''
+      echo '  eXit Convert Routine! By by ...'
+      echo ''
+  	fi
+
+
+    if [[ $REPLY == 1 ]]; then
+
+      ORIGINIMGPATH="${HOME}/Projects/001/source/assets/images/authors/"
+      DESTINIMGPATH="${HOME}/Projects/001/source/assets/images/"
+
+      read -p "Insert jpg file name ... without extention ... :"
+      echo ''
+      if [[ "${REPLY}" != "" && -f "${ORIGINIMGPATH}${REPLY}.png" ]]; then
+
+        # conversione
+        convert \
+          ${ORIGINIMGPATH}/${REPLY}.png \
+          -size 50x50 \
+          -background '#486d73' \
+          -alpha background \
+          -flatten \
+          ${DESTINIMGPATH}/${REPLY}.jpg
+
+        # compressione
+        convert \
+          ${DESTINIMGPATH}/${REPLY}.jpg \
+          -density 72 \
+          -quality 85 \
+          -define jpeg:fancy-upsampling=off \
+          -unsharp 0.25x0.25+8+0.065 \
+          -dither None \
+          -interlace none \
+          -colorspace sRGB \
+          -strip \
+          ${DESTINIMGPATH}/${REPLY}.jpg
+
+				else
+		    	echo ''
+		      echo '  Invalid entry! Wait ...'
+		      echo ''
+		      sleep 1
+
+      fi
+  	fi
+  fi
+	done
+  unset DESTINIMGPATH ORIGINIMGPATH REPLY
+}
+
+_main_code

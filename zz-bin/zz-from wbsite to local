@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+
+# ******************************
+# *                            *
+# *       Main menu            *
+# *                            *
+#*******************************
+
+_f_rsync_file () {
+	rsync "$@" \
+		--exclude '.git/' \
+		--exclude '.DS_Store' \
+		--exclude 'Icon?' \
+		--exclude '*.sh' \
+		-zavh --no-perms --protect-args --dry-run;
+  echo ''
+	echo "Dettagli: [    $@]"
+  echo ''
+  read -p "Continue ... ?" -n 1
+	if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
+  	rsync "$@" \
+	  	--exclude '.git/' \
+	  	--exclude '.DS_Store' \
+	  	--exclude 'Icon?' \
+	  	--exclude '*.sh' \
+	  	-zavh --no-perms --protect-args;
+  fi
+}
+
+_main_code () {
+
+	while [[ $REPLY != 'x' ]]; do
+		clear && echo ''
+  	cat <<_EOF_
+  Copia file da wbsite a server locale:
+
+    1. Copy 001 My Business Card
+    2. Copy 002 Whales in ... Zamami!
+
+    6. Copy 006 roTokyo project files
+
+    x. eXit
+
+_EOF_
+  	read -p "Enter selection [0-9] > "
+  	if [[ $REPLY =~ ^[0-9]$ || $REPLY =~ ^[?]$  || $REPLY =~ ^[x]$ ]]; then
+
+    	if [[ $REPLY == 'x' ]]; then
+    		echo ''
+        echo '  eXit Installation Routine! By by ...'
+        echo ''
+    	fi
+
+# inProva project files
+
+# Top Site 127.0.0.1
+    	if [[ $REPLY == 1 ]]; then
+        clear
+        #
+        # IMPORTANTE
+        # il '/' al termine di ORIGIN fa copiare solo i files
+        # e non crea la directory wbsite in DESTINATION
+        #
+        # qui dobbiamo usare rsync senza --no-delete per non
+        # cancellare tutti i server che ci servono perciò
+        # di tanto in tanto occorre fare pulizia manuale dei file inutili
+        #
+        ORIGIN="$HOME/Projects/001/wbsite/"
+        DESTIN="$HOME/Sites"
+        cd $HOME/Projects/001/
+        JEKYLL_ENV=development bundle exec jekyll build --config _config.yml
+				_f_rsync_file $ORIGIN $DESTIN
+    	fi
+
+# Zamami ... a caccia di balene balena.test
+    	if [[ $REPLY == 2 ]]; then
+    	  clear
+    	  ORIGIN="$HOME/Projects/002/wbsite/"
+    	  DESTIN="$HOME/Sites/whales"
+    	  if [[ ! -d "${DESTIN}" ]]; then
+    	    mkdir "${DESTIN}"
+    	  fi
+    	  cd $HOME/Projects/002/
+    	  JEKYLL_ENV=development bundle exec jekyll build --config _config.yml
+    	  _f_rsync_file --delete $ORIGIN $DESTIN
+    	fi
+
+# Il mio diario diario.test
+
+# Guida turistica guida.test
+
+# Kazue resume resume.test
+
+# Il mio blog roTokyo.test
+    	if [[ $REPLY == 6 ]]; then
+    	  clear
+    	  ORIGIN="$HOME/Projects/006/wbsite/"
+    	  DESTIN="$HOME/Sites/blog"
+    	  if [[ ! -d "${DESTIN}" ]]; then
+    	    mkdir "${DESTIN}"
+    	  fi
+    	  cd $HOME/Projects/006/
+    	  JEKYLL_ENV=development bundle exec jekyll build --config _config.yml
+    	  _f_rsync_file --delete $ORIGIN $DESTIN
+    	fi
+
+# Una struttura di prova
+
+    else
+    	echo ''
+      echo '  Invalid entry! Wait ...'
+      echo ''
+      sleep 1
+  	fi
+	done
+  unset DESTIN ORIGIN REPLY
+}
+
+_main_code
+
+

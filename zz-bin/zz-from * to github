@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+
+# ******************************
+# *                            *
+# *       Main menu            *
+# *                            *
+#*******************************
+
+
+
+_main_code () {
+
+	while [[ $REPLY != 'x' ]]; do
+		clear && echo ''
+  	cat <<_EOF_
+  Copia file da * a github:
+
+    0. Upload inProva
+
+    1. Upload roCard
+    2. Upload whales
+
+    6. Upload blog
+
+    x. eXit
+
+_EOF_
+  	read -p "Enter selection [0-9] > "
+  	if [[ $REPLY =~ ^[0-9]$ || $REPLY =~ ^[?]$  || $REPLY =~ ^[x]$ ]]; then
+
+    	if [[ $REPLY == 'x' ]]; then
+    		echo ''
+        echo '  eXit Installation Routine! By by ...'
+        echo ''
+    	fi
+
+# roCard Site
+    	if [[ $REPLY == 1 ]]; then
+        cd /Users/rc/Projects/001/
+    		echo ''
+        echo '  build production site ... '
+        echo ''
+        JEKYLL_ENV=production bundle exec jekyll build --config _config.yml,_config_prod.yml
+        read -p "Site builded ... upload ... ?[yY]" -n 1
+	      if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
+    		  echo ''
+          echo '  build production site ... '
+          echo ''
+	        cd wbsite
+	        git add -A && git commit -am 'My business card web site'
+	        git push -u origin master
+	        cd ..
+	      fi
+    	fi
+
+# blog Site
+    	if [[ $REPLY == 2 ]]; then
+        cd /Users/rc/Projects/002/
+    		echo ''
+        echo '  build production site ... '
+        echo ''
+        JEKYLL_ENV=production bundle exec jekyll build --config _config.yml,_config_prod.yml --incremental
+        read -p "Site builded ... upload ... ?[yY]" -n 1
+	      if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
+    		  echo ''
+          echo '  build production site ... '
+          echo ''
+	        cd whales
+	        git add -A && git commit -am 'Whales in ... Zamami!'
+	        git push -u origin master
+	        cd ..
+	      fi
+    	fi
+
+# blog Site
+    	if [[ $REPLY == 6 ]]; then
+        cd /Users/rc/Projects/006/
+    		echo ''
+        echo '  build production site ... '
+        echo ''
+        JEKYLL_ENV=production bundle exec jekyll build --config _config.yml,_config_prod.yml --incremental
+        read -p "Site builded ... upload ... ?[yY]" -n 1
+	      if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
+    		  echo ''
+          echo '  build production site ... '
+          echo ''
+	        cd blog
+	        git add -A && git commit -am 'My blog web site'
+	        git push -u origin master
+	        cd ..
+	      fi
+    	fi
+
+    else
+    	echo ''
+      echo '  Invalid entry! Wait ...'
+      echo ''
+      sleep 1
+  	fi
+	done
+  unset DESTIN ORIGIN REPLY
+}
+
+_main_code
+
+

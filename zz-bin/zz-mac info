@@ -192,3 +192,5 @@ ${BLUE#   }         ####     #####            ${fieldlist[12]}
 ${normal}
 "
 fi
+
+read -p "Press any button to EXIT ⧳ " -n 1

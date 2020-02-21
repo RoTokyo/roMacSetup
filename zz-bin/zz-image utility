@@ -6,9 +6,12 @@
 # *                                *
 #***********************************
 #
+# convert octocat.png   -background 'rgb(230, 46, 104)' -alpha background -flatten  png_sma.jpg
+
 
 ORIGINIMGPATH="${HOME}/Pictures/ZZ-images/AA-source/"
 DESTINIMGPATH="${HOME}/Pictures/ZZ-images/AA-destination/"
+
 
 function _roTokyo_image () {
   unset REPLY
@@ -42,6 +45,8 @@ function _responsive_image () {
 				_f_alert_info "File $REPLY-1920.jpg creato."
 				_convert_1600
 				_f_alert_info "File $REPLY-1600.jpg creato."
+				_convert_1440
+				_f_alert_info "File $REPLY-1440.jpg creato."
 				_convert_1200
 				_f_alert_info "File $REPLY-1200.jpg creato."
 				_convert_800
@@ -53,6 +58,26 @@ function _responsive_image () {
 	  	  _convert_blur
 	  	  _f_alert_info "File $REPLY-blur.jpg creato."
 	  	fi
+  fi
+  read -p "$(_f_alert_success 'Press any button to EXIT ⧳ ')" -n 1
+}
+
+function _jpg_minimize () {
+  unset REPLY
+  seek_confirmation "Insert jpg file name ... without extention ... :"
+  if is_confirmed
+    then
+      convert \
+	    ${ORIGINIMGPATH}/${REPLY}.jpg \
+	    -density 72 \
+	    -quality 85 \
+	    -define jpeg:fancy-upsampling=off \
+	    -unsharp 0.25x0.25+8+0.065 \
+	    -dither None \
+	    -interlace none \
+	    -colorspace sRGB \
+	    -strip \
+	    ${DESTINIMGPATH}/${REPLY}.jpg
   fi
   read -p "$(_f_alert_success 'Press any button to EXIT ⧳ ')" -n 1
 }
@@ -85,6 +110,21 @@ function _convert_1600 () {
 	-colorspace sRGB \
 	-strip \
 	${DESTINIMGPATH}/${REPLY}-1600.jpg
+}
+
+function _convert_1440 () {
+  convert \
+	${ORIGINIMGPATH}/${REPLY}.jpg \
+	-density 72 \
+	-scale 1440 \
+	-quality 85 \
+	-define jpeg:fancy-upsampling=off \
+	-unsharp 0.25x0.25+8+0.065 \
+	-dither None \
+	-interlace none \
+	-colorspace sRGB \
+	-strip \
+	${DESTINIMGPATH}/${REPLY}-1440.jpg
 }
 
 function _convert_1200 () {
@@ -172,6 +212,7 @@ function _convert_blur () {
 	fi
 }
 
+
 function seek_confirmation() {
   read -p "$(_f_alert_input "$@")" REPLY
   echo ''
@@ -225,24 +266,36 @@ _menu () {
 
 	local readonly DELAY=2
 
-	while [[ $REPLY != 0 ]]; do
+	while [[ $REPLY != x ]]; do
 		clear && echo ''
   	cat <<_EOF_
   Image manipulation menu:
+
+    0. minimize jpg
+
     1. roTokyo image manipulation routine
     2. blur image for web site
     3. responsive images for web site
 
-    0. eXit
+    x. eXit
 
 _EOF_
   	read -p "Enter selection [0-3] > "
-  	if [[ ${REPLY} =~ ^[0-3]$ ]]; then
-    	if [[ ${REPLY} == 0 ]]; then
+  	if [[ $REPLY =~ ^[0-9]$ || $REPLY =~ ^[?]$  || $REPLY =~ ^[x]$ ]]; then
+
+    	if [[ ${REPLY} == x ]]; then
         echo ''; _f_alert_menu '  eXit Installation Routine! Wait ...'; echo ''
       	sleep ${DELAY}
 				clear
     	fi
+
+
+     	if [[ ${REPLY} == 0 ]]; then
+        echo ''; _f_alert_menu '  0. minimize jpg ...'; echo ''
+        _jpg_minimize
+    	fi
+
+
     	if [[ ${REPLY} == 1 ]]; then
         clear
       	echo '';  _f_alert_menu '  1. roTokyo image manipulation routine '; echo ''
@@ -258,6 +311,7 @@ _EOF_
       	echo '';  _f_alert_menu '  3. responsive images for web site '; echo ''
         _responsive_image
     	fi
+
     	else
         _f_alert_warning '  Invalid entry! Wait ...'
       	sleep ${DELAY}
@@ -268,3 +322,5 @@ _EOF_
 
 _menu
 _byby
+
+

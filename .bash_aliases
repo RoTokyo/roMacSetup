@@ -11,11 +11,10 @@ alias ms='cd $HOME/Projects/roMacSetup'
 # ****** jekyll Commands *********
 alias jx='bundle exec jekyll clean; rm -rf .sass-cache'
 
-alias jd='JEKYLL_ENV=development bundle exec jekyll serve'
-alias jdi='JEKYLL_ENV=development bundle exec jekyll serve --incremental'
+alias js='JEKYLL_ENV=development bundle exec jekyll serve --config _config.yml --incremental'
 
-alias jp='JEKYLL_ENV=production bundle exec jekyll build'
-alias jpi='JEKYLL_ENV=production bundle exec jekyll build --incremental'
+alias jb='JEKYLL_ENV=production  bundle exec jekyll build --config _config.yml,_config_prod.yml --incremental'
+alias jj='JEKYLL_ENV=production  bundle exec jekyll serve --config _config.yml,_config_prod.yml --incremental'
 
 alias draft='j && cd zz-bin && ./zz-draft'
 
@@ -58,3 +57,15 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 
 alias h='history'
+
+
+
+export PATH=$PATH:/Users/rc/desktops/clarity-code
+
+alias sw="switch_desktop.py"
+
+alias dd="delete_desktop.py"
+
+alias ad="assign_desktop.py"
+
+alias rd="renumber_desktop.py"

@@ -71,7 +71,7 @@ _EOF_
   	read -p "Enter selection [0-1] > "
   	if [[ ${REPLY} =~ ^[0-1]$ ]]; then
     	if [[ ${REPLY} == 0 ]]; then
-        echo ''; _f_alert_menu '  eXit Installation Routine! Wait ...'; echo ''
+        echo ''; _f_alert_menu '  eXit connecting Routine! Wait ...'; echo ''
       	sleep ${DELAY}
 				clear
     	fi
