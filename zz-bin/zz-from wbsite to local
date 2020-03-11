@@ -34,15 +34,18 @@ _main_code () {
   	cat <<_EOF_
   Copia file da wbsite a server locale:
 
+    0. Copy 000 Sito di prove tecniche
+
     1. Copy 001 My Business Card
     2. Copy 002 Whales in ... Zamami!
+    3. Copy 003 Caro diario!
 
     6. Copy 006 roTokyo project files
 
     x. eXit
 
 _EOF_
-  	read -p "Enter selection [0-9] > "
+  	read -p "Enter selection [ExIT 0-9] > "
   	if [[ $REPLY =~ ^[0-9]$ || $REPLY =~ ^[?]$  || $REPLY =~ ^[x]$ ]]; then
 
     	if [[ $REPLY == 'x' ]]; then
@@ -51,9 +54,20 @@ _EOF_
         echo ''
     	fi
 
-# inProva project files
+# Test Site prova.test
+    	if [[ $REPLY == 0 ]]; then
+    	  clear
+    	  ORIGIN="$HOME/Projects/000/wbsite/"
+    	  DESTIN="$HOME/Sites/prova"
+    	  if [[ ! -d "${DESTIN}" ]]; then
+    	    mkdir "${DESTIN}"
+    	  fi
+    	  cd $HOME/Projects/000/
+    	  JEKYLL_ENV=development bundle exec jekyll build --config _config.yml
+    	  _f_rsync_file --delete $ORIGIN $DESTIN
+    	fi
 
-# Top Site 127.0.0.1
+# Top Site - 127.0.0.1
     	if [[ $REPLY == 1 ]]; then
         clear
         #
@@ -72,7 +86,7 @@ _EOF_
 				_f_rsync_file $ORIGIN $DESTIN
     	fi
 
-# Zamami ... a caccia di balene balena.test
+# Zamami ... a caccia di balene - balena.test
     	if [[ $REPLY == 2 ]]; then
     	  clear
     	  ORIGIN="$HOME/Projects/002/wbsite/"
@@ -85,13 +99,25 @@ _EOF_
     	  _f_rsync_file --delete $ORIGIN $DESTIN
     	fi
 
-# Il mio diario diario.test
+# Caro diario - diario.test
+    	if [[ $REPLY == 3 ]]; then
+    	  clear
+    	  ORIGIN="$HOME/Projects/003/wbsite/"
+    	  DESTIN="$HOME/Sites/diario"
+    	  if [[ ! -d "${DESTIN}" ]]; then
+    	    mkdir "${DESTIN}"
+    	  fi
+    	  cd $HOME/Projects/003/
+    	  JEKYLL_ENV=development bundle exec jekyll build --config _config.yml
+    	  _f_rsync_file --delete $ORIGIN $DESTIN
+    	fi
+
 
 # Guida turistica guida.test
 
 # Kazue resume resume.test
 
-# Il mio blog roTokyo.test
+# Enjoy Japan! - roTokyo.test
     	if [[ $REPLY == 6 ]]; then
     	  clear
     	  ORIGIN="$HOME/Projects/006/wbsite/"

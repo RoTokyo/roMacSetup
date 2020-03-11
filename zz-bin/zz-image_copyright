@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+
+# **********************************
+# *                                *
+# *  erase and write image copy    *
+# *                                *
+#***********************************
+#
+
+
+_main_code () {
+
+	while [[ $REPLY != 'x' ]]; do
+		clear && echo ''
+  	cat <<_EOF_
+  erase and write image copyrights:
+
+    1. do one file
+
+    2. do a bunch of files
+
+    x. eXit
+
+_EOF_
+
+  read -p "Enter selection [ExIT or 1] > "
+  if [[ $REPLY =~ ^[1-2]$ || $REPLY =~ ^[?]$  || $REPLY =~ ^[x]$ ]]; then
+
+  	if [[ $REPLY == 'x' ]]; then
+  		echo ''
+      echo '  eXit Convert Routine! By by ...'
+      echo ''
+  	fi
+
+
+    if [[ $REPLY == 1 ]]; then
+
+      ORIGINIMGPATH="${HOME}/Pictures/ZZ-images/AA-destination"
+      DESTINIMGPATH="${HOME}/Pictures/ZZ-images/AA-destination"
+
+      read -p 'Insert file name ... :'
+      echo ''
+      if [[ "${REPLY}" != "" && -f "${ORIGINIMGPATH}/${REPLY}" ]]; then
+
+        # erase all image metadata
+        mogrify \
+          -strip \
+          ${ORIGINIMGPATH}/${REPLY}
+        read -p "${REPLY} Metadata erased ... : press any key to continue!"
+
+        # write copyrights data
+        exiftool \
+          -Artist="roTokyo" \
+          -UsageTerms="--CC BY-NC-SA 4.0--" \
+          -WebStatement="https://creativecommons.org/licenses/by-nc-sa/4.0/" \
+          -URL="https://creativecommons.org/licenses/by-nc-sa/4.0/" \
+          -CopyrightNotice="Roberto Calesini" \
+          -Rights="Roberto Calesini" \
+          -Creator=roTokyo \
+          -CreatorCity=Tokyo \
+          -CreatorCountry=Japan \
+          -CreatorWorkEmail=rotokyo@icloud.com \
+          -CreatorWorkURL="https://rotokyo.github.io" \
+          ${ORIGINIMGPATH}/${REPLY}
+        exiftool ${ORIGINIMGPATH}/${REPLY}
+        read -p "${REPLY} New metadata saved ... : press any key to continue!"
+			else
+		    	echo ''
+		      echo '  Invalid entry! Wait ...'
+		      echo ''
+		      sleep 1
+
+      fi
+  	fi
+
+  	if [[ $REPLY == 2 ]]; then
+  	  ORIGINIMGPATH="${HOME}/Pictures/ZZ-images/AA-destination"
+
+  	  for file in $ORIGINIMGPATH/*.jpg; do
+  	    if [[ -f ${file} ]]; then
+          # erase all image metadata
+          mogrify -strip ${file}
+
+          # write copyrights data
+          exiftool \
+            -Artist="roTokyo" \
+            -UsageTerms="--CC BY-NC-SA 4.0--" \
+            -WebStatement="https://creativecommons.org/licenses/by-nc-sa/4.0/" \
+            -URL="https://creativecommons.org/licenses/by-nc-sa/4.0/" \
+            -CopyrightNotice="Roberto Calesini" \
+            -Rights="Roberto Calesini" \
+            -Creator=roTokyo \
+            -CreatorCity=Tokyo \
+            -CreatorCountry=Japan \
+            -CreatorWorkEmail=rotokyo@icloud.com \
+            -CreatorWorkURL="https://rotokyo.github.io" \
+            ${file}
+          echo "File: ${file} modified! ... "
+        else
+		    	echo ''
+		      echo '  No *.jpg files found!'
+		      echo ''
+          read -p "Press any button to continue ... :"
+	      fi
+      done
+
+  	fi
+  fi
+	done
+  unset DESTINIMGPATH ORIGINIMGPATH REPLY
+}
+
+_main_code

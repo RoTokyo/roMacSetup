@@ -18,23 +18,29 @@ function _write () {
 
 echo "---
 published:   false
-title:
-description:
-image:
-figCaption: - © roTokyo
+title:       ''      #Important for SEO
+description: ''      #Important for SEO
+keywords:    ''      #Important for SEO
+author:      ''
+
+figure:
+  image:     .jpg
+  caption:   ' - © roTokyo'
+  facebook:  -fb.jpg   # Important ratio of 1.9:1      (1200 x 630 o 1200 x 1200 sono perfette)
+  twitter:   -tw.jpg   # non serve usa in automatico facebook image ma ratio of 2:1 o 1:1 (1200 x 1200 sono perfette)
+
+#image:
+#figCaption: - © roTokyo
 itinerario:
 quando:
 giorno:
 indirizzo:
-tags:
+
+tags:        ['tag1', 'tag2']
+categories:  ['category1', 'category2']
+#permalink:
 
 youTubeId:
-
-map:
-  title:
-  latitude:
-  longitude:
-  markerimage:
 
 location:
   - title:
@@ -43,15 +49,11 @@ location:
     zoom:
     markerimage:
 
-seo:
-  description:
-  keywords:
-  excerpt:
-
 sitemap:
   lastmod:
   changefreq:
   priority:
+  exclude:     #per ecludere: Yes
 ---
 
 

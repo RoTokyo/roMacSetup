@@ -85,7 +85,7 @@ _EOF_
           echo '  build production site ... '
           echo ''
 	        cd blog
-	        git add -A && git commit -am 'My blog web site'
+	        git add -A && git commit -am 'Enjoy Japan!'
 	        git push -u origin master
 	        cd ..
 	      fi

@@ -14,7 +14,7 @@ _main_code () {
 	while [[ $REPLY != 'x' ]]; do
 		clear && echo ''
   	cat <<_EOF_
-  Copy .png image to .jpg:
+  Convert .png image to .jpg:
 
     1. convert
 
@@ -22,7 +22,7 @@ _main_code () {
 
 _EOF_
 
-  read -p "Enter selection [0-9] > "
+  read -p "Enter selection [ExIT or 0-9] > "
   if [[ $REPLY =~ ^[0-9]$ || $REPLY =~ ^[?]$  || $REPLY =~ ^[x]$ ]]; then
 
   	if [[ $REPLY == 'x' ]]; then
@@ -34,18 +34,19 @@ _EOF_
 
     if [[ $REPLY == 1 ]]; then
 
-      ORIGINIMGPATH="${HOME}/Projects/001/source/assets/images/authors/"
-      DESTINIMGPATH="${HOME}/Projects/001/source/assets/images/"
+      #ORIGINIMGPATH="${HOME}/Projects/001/source/assets/images/authors/"
+      #DESTINIMGPATH="${HOME}/Projects/001/source/assets/images/"
 
-      read -p "Insert jpg file name ... without extention ... :"
+      ORIGINIMGPATH="${HOME}/Pictures/ZZ-images/AA-source/"
+      DESTINIMGPATH="${HOME}/Pictures/ZZ-images/AA-destination/"
+
+      read -p "Insert png file name ... without extention ... :"
       echo ''
       if [[ "${REPLY}" != "" && -f "${ORIGINIMGPATH}${REPLY}.png" ]]; then
 
         # conversione
         convert \
           ${ORIGINIMGPATH}/${REPLY}.png \
-          -size 50x50 \
-          -background '#486d73' \
           -alpha background \
           -flatten \
           ${DESTINIMGPATH}/${REPLY}.jpg
