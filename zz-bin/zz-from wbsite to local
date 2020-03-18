@@ -40,7 +40,9 @@ _main_code () {
     2. Copy 002 Whales in ... Zamami!
     3. Copy 003 Caro diario!
 
-    6. Copy 006 roTokyo project files
+    6. Copy 006 Enjoy Japan!
+
+    8. Copy 008 Il Politrofo
 
     x. eXit
 
@@ -126,6 +128,19 @@ _EOF_
     	    mkdir "${DESTIN}"
     	  fi
     	  cd $HOME/Projects/006/
+    	  JEKYLL_ENV=development bundle exec jekyll build --config _config.yml
+    	  _f_rsync_file --delete $ORIGIN $DESTIN
+    	fi
+
+# Enjoy Japan! - roTokyo.test
+    	if [[ $REPLY == 8 ]]; then
+    	  clear
+    	  ORIGIN="$HOME/Projects/008/wbsite/"
+    	  DESTIN="$HOME/Sites/ilpoli"
+    	  if [[ ! -d "${DESTIN}" ]]; then
+    	    mkdir "${DESTIN}"
+    	  fi
+    	  cd $HOME/Projects/008/
     	  JEKYLL_ENV=development bundle exec jekyll build --config _config.yml
     	  _f_rsync_file --delete $ORIGIN $DESTIN
     	fi

@@ -19,6 +19,7 @@ _main_code () {
 
     1. Upload roCard
     2. Upload whales
+    3. Upload diario
 
     6. Upload blog
 
@@ -53,7 +54,7 @@ _EOF_
 	      fi
     	fi
 
-# blog Site
+# whales Site
     	if [[ $REPLY == 2 ]]; then
         cd /Users/rc/Projects/002/
     		echo ''
@@ -67,6 +68,25 @@ _EOF_
           echo ''
 	        cd whales
 	        git add -A && git commit -am 'Whales in ... Zamami!'
+	        git push -u origin master
+	        cd ..
+	      fi
+    	fi
+
+# whales Site
+    	if [[ $REPLY == 3 ]]; then
+        cd /Users/rc/Projects/003/
+    		echo ''
+        echo '  build production site ... '
+        echo ''
+        JEKYLL_ENV=production bundle exec jekyll build --config _config.yml,_config_prod.yml --incremental
+        read -p "Site builded ... upload ... ?[yY]" -n 1
+	      if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
+    		  echo ''
+          echo '  build production site ... '
+          echo ''
+	        cd diario
+	        git add -A && git commit -am 'Caro diario'
 	        git push -u origin master
 	        cd ..
 	      fi

@@ -5,16 +5,15 @@
 # ****** Navigation Commands ***
 alias b='cd $HOME/bin'
 alias p='cd $HOME/Projects'
-alias rot='cd $HOME/Projects/roTokyo'
-alias ms='cd $HOME/Projects/roMacSetup'
+
 
 # ****** jekyll Commands *********
 alias jx='bundle exec jekyll clean; rm -rf .sass-cache'
 
 alias js='JEKYLL_ENV=development bundle exec jekyll serve --config _config.yml --incremental'
-
+alias jd='JEKYLL_ENV=development bundle exec jekyll serve --config _config.yml'
 alias jb='JEKYLL_ENV=production  bundle exec jekyll build --config _config.yml,_config_prod.yml --incremental'
-alias jj='JEKYLL_ENV=production  bundle exec jekyll serve --config _config.yml,_config_prod.yml --incremental'
+alias jp='JEKYLL_ENV=production  bundle exec jekyll serve --config _config.yml,_config_prod.yml'
 
 alias draft='j && cd zz-bin && ./zz-draft'
 
@@ -59,13 +58,9 @@ alias ....='cd ../../..'
 alias h='history'
 
 
-
+# ******** Desktops *********
 export PATH=$PATH:/Users/rc/desktops/clarity-code
-
 alias sw="switch_desktop.py"
-
 alias dd="delete_desktop.py"
-
 alias ad="assign_desktop.py"
-
 alias rd="renumber_desktop.py"

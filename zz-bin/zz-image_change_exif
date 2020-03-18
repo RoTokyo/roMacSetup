@@ -8,30 +8,14 @@ ORIGINIMGPATH="${HOME}/Pictures/ZZ-images/AA-destination"
   for file in $ORIGINIMGPATH/*.jpg; do
 
     if [[ -f ${file} ]]; then
+
     # NOTA:
-    # Cancella tutto meno i tag definiti
-      exiftool -All:All= \
-        -TagsFromFile ${file} \
-        -Make -Model \
-        -ExposureTime \
-        -FNumber \
-        -ISO \
-        -FocalLength \
-        -LensModel \
-        ${file}
-    # NOTA:
-    # Da qui uso il file di configurazione
-    # .ExifTool_config situato in ~/
-      exiftool \
-        -Artist="roTokyo" \
-        -ArtistCity="Tokyo" \
-        -ArtistCountry="Japan" \
-        -ArtistWorkURL="https://rotokyo.github.io" \
-        -ArtistWorkEmail="rotokyo@icloud.com" \
-        -CopyRightsOwner="Roberto Calesini" \
-        -UsageTerms="--CC BY-NC-SA 4.0--" \
-        -UsageWebStatement="https://creativecommons.org/licenses/by-nc-sa/4.0/" \
-        ${file}
+    #
+    #
+    # Read  item=`exiftool -s -a -LensModel ${file}`
+    #
+    # Write item=`exiftool -s -a -LensModel="105mm f/2.8D Micro Nikkor" ${file}`
+
     fi
 
     # estrae nome file completo: echo $(basename "$(dirname "$file")") con spazi vuoti
@@ -40,7 +24,7 @@ ORIGINIMGPATH="${HOME}/Pictures/ZZ-images/AA-destination"
     # Estrae nome file: echo "${file%.*}"
     # Estrae estensione: echo "${file##*.}"
     # nomefiledacancellare="${file%.*}.jpg_original"
-    echo "File elaborati: " $(basename $file)
+    echo "File elaborati: " $(basename $file) $item;
     if [[ -f ${file%.*}".jpg_original" ]]; then
       rm -f ${file%.*}".jpg_original"
       echo "Cancellato: " ${file%.*}".jpg_original"

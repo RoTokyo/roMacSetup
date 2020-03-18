@@ -1,0 +1,43 @@
+%Image::ExifTool::UserDefined = (
+
+  'Image::ExifTool::Exif::Main' => {
+    0xd001 => {
+      Name => 'ArtistCity',
+      Writable => 'string',
+      WriteGroup => 'IFD0',
+    },
+    0xd002 => {
+      Name => 'ArtistCountry',
+      Writable => 'string',
+      WriteGroup => 'IFD0',
+    },
+    0xd003 => {
+      Name => 'ArtistWorkURL',
+      Writable => 'string',
+      WriteGroup => 'IFD0',
+    },
+    0xd004 => {
+      Name => 'ArtistWorkEmail',
+      Writable => 'string',
+      WriteGroup => 'IFD0',
+    },
+    0xd005 => {
+      Name => 'CopyRightsOwner',
+      Writable => 'string',
+      WriteGroup => 'IFD0',
+    },
+    0xd006 => {
+      Name => 'UsageTerms',
+      Writable => 'string',
+      WriteGroup => 'IFD0',
+    },
+    0xd007 => {
+      Name => 'UsageWebStatement',
+      Writable => 'string',
+      WriteGroup => 'IFD0',
+    },
+  },
+);
+
+
+

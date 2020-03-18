@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+echo "Il processo è irreversibile ... continuo?"
+read -p "    [To exit press any key ... 1 to go] > "
+if [[ $REPLY =~ ^[1] ]]; then
+ORIGINIMGPATH="${HOME}/Pictures/ZZ-images/AA-destination"
+
+  for file in $ORIGINIMGPATH/*.jpg; do
+
+    if [[ -f ${file} ]]; then
+    # NOTA:
+    #
+    # Taglia il file a 420x420 e butta l'eccesso
+      mogrify \
+        ${file} \
+        -crop 420x420+0+0 \
+        -unsharp 0.25x0.25+8+0.065 \
+        -dither None \
+        -posterize 136 \
+        -define jpeg:fancy-upsampling=off \
+        -interlace none \
+        -colorspace sRGB \
+        ${file}
+    fi
+    echo "File elaborati: " $(basename $file)
+  done
+  read -p "Fine > "
+else
+  echo "Stop"
+fi

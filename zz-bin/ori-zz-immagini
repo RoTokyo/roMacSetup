@@ -8,6 +8,16 @@ ORIGINIMGPATH="${HOME}/Pictures/ZZ-images/AA-destination"
   for file in $ORIGINIMGPATH/*.jpg; do
 
     if [[ -f ${file} ]]; then
+      mogrify \
+        ${file} \
+        -crop 420x420+0+0 \
+        -unsharp 0.25x0.25+8+0.065 \
+        -dither None \
+        -posterize 136 \
+        -define jpeg:fancy-upsampling=off \
+        -interlace none \
+        -colorspace sRGB \
+        ${file}
     # NOTA:
     # Cancella tutto meno i tag definiti
       exiftool -All:All= \
