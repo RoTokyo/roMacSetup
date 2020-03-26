@@ -65,7 +65,7 @@ _EOF_
     	    mkdir "${DESTIN}"
     	  fi
     	  cd $HOME/Projects/000/
-    	  JEKYLL_ENV=development bundle exec jekyll build --config _config.yml
+    	  #JEKYLL_ENV=development bundle exec jekyll build --config _config.yml
     	  _f_rsync_file --delete $ORIGIN $DESTIN
     	fi
 
@@ -84,7 +84,7 @@ _EOF_
         ORIGIN="$HOME/Projects/001/wbsite/"
         DESTIN="$HOME/Sites"
         cd $HOME/Projects/001/
-        JEKYLL_ENV=development bundle exec jekyll build --config _config.yml
+        #JEKYLL_ENV=development bundle exec jekyll build --config _config.yml
 				_f_rsync_file $ORIGIN $DESTIN
     	fi
 
@@ -97,7 +97,7 @@ _EOF_
     	    mkdir "${DESTIN}"
     	  fi
     	  cd $HOME/Projects/002/
-    	  JEKYLL_ENV=development bundle exec jekyll build --config _config.yml
+    	  #JEKYLL_ENV=development bundle exec jekyll build --config _config.yml
     	  _f_rsync_file --delete $ORIGIN $DESTIN
     	fi
 
@@ -110,7 +110,7 @@ _EOF_
     	    mkdir "${DESTIN}"
     	  fi
     	  cd $HOME/Projects/003/
-    	  JEKYLL_ENV=development bundle exec jekyll build --config _config.yml
+    	  #JEKYLL_ENV=development bundle exec jekyll build --config _config.yml
     	  _f_rsync_file --delete $ORIGIN $DESTIN
     	fi
 
@@ -128,7 +128,7 @@ _EOF_
     	    mkdir "${DESTIN}"
     	  fi
     	  cd $HOME/Projects/006/
-    	  JEKYLL_ENV=development bundle exec jekyll build --config _config.yml
+    	  #JEKYLL_ENV=development bundle exec jekyll build --config _config.yml
     	  _f_rsync_file --delete $ORIGIN $DESTIN
     	fi
 
@@ -141,7 +141,7 @@ _EOF_
     	    mkdir "${DESTIN}"
     	  fi
     	  cd $HOME/Projects/008/
-    	  JEKYLL_ENV=development bundle exec jekyll build --config _config.yml
+    	  #JEKYLL_ENV=development bundle exec jekyll build --config _config.yml
     	  _f_rsync_file --delete $ORIGIN $DESTIN
     	fi
 

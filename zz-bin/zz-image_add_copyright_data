@@ -23,6 +23,7 @@ ORIGINIMGPATH="${HOME}/Pictures/ZZ-images/AA-destination"
     # Da qui uso il file di configurazione
     # .ExifTool_config situato in ~/
       exiftool \
+        -FotoTitle="A glimpse of Japan" \
         -Artist="roTokyo" \
         -ArtistCity="Tokyo" \
         -ArtistCountry="Japan" \

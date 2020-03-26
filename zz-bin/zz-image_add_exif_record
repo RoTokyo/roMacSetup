@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+
+echo;echo;echo "Il processo è irreversibile ... continuo?";echo;echo
+
+read -p "[To exit press any key ... 1 to go] > "
+if [[ $REPLY =~ ^[1] ]]; then
+ORIGINIMGPATH="${HOME}/Pictures/ZZ-images/AA-destination"
+EXIFtag="-FotoTitle"
+
+  for file in $ORIGINIMGPATH/*.jpg; do
+
+    if [[ -f ${file} ]]; then
+
+      # NOTA:
+      #
+      # legge il valore del tag
+      tag=$(exiftool -s -a ${EXIFtag} ${file})
+
+      # NOTA:
+      #
+      # scrive item=`exiftool -s -a -LensModel="105mm f/2.8D Micro Nikkor" ${file}`
+
+      # NOTA:
+      #
+      # Per immettere un nuovo valore al tag
+      #
+      if [[ ${tag} ]]; then
+        OLDVALTAG=$(echo $tag | sed 's/^.*: //' )
+        read -p "[${OLDVALTAG}] Insert new value > " NEWVALTAG
+        if [[ ! -z ${NEWVALTAG} ]]; then
+          exiftool ${EXIFtag}="${NEWVALTAG}" ${file}
+          echo ${EXIFtag}" = ["${NEWVALTAG}"] record modificato!"
+        else
+          echo ${EXIFtag}" = ["${OLDVALTAG}"] record non modificato!"
+        fi
+      else
+        read -p "[Inserisci valore ${EXIFtag} nel file $(basename $file)] > " VALORETAG
+        if [[ ! -z ${VALORETAG} ]]; then
+          exiftool ${EXIFtag}="${VALORETAG}" ${file}
+        else
+          echo ${EXIFtag}" non modificato"
+        fi
+      fi
+
+      #result=$(echo $tag | grep -Eo '.*:(.*)')
+      #result=$(echo $tag | sed 's/^.*: //' )
+      #echo "$result"
+
+      echo;echo
+      echo '================='
+      # estrae nome file completo: echo $(basename "$(dirname "$file")") con spazi vuoti
+      # estrae nome file completo: echo $(basename $file) ma non accetta spazi vuoti
+      # Estrae nome file: echo "${file##*/}"
+      # Estrae nome file: echo "${file%.*}"
+      # Estrae estensione: echo "${file##*.}"
+      # nomefiledacancellare="${file%.*}.jpg_original"
+      echo "File elaborati: " $(basename $file)
+      echo "Record:         " $(exiftool -a -s -H $EXIFtag $file)
+      if [[ -f ${file%.*}".jpg_original" ]]; then
+        rm -f ${file%.*}".jpg_original"
+        echo "Cancellato: " ${file%.*}".jpg_original"
+      fi
+      echo '================='
+
+    fi
+
+  done
+  read -p "Fine > "
+else
+  echo "Stop"
+fi
+
+
+
+

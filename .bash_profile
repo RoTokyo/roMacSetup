@@ -21,3 +21,6 @@ for file in ~/.{bash_prompt,bash_aliases,bash_export,bash_functions}; do
 done
 unset file
 
+
+export NVM_DIR="/Users/rc/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

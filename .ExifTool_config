@@ -1,6 +1,11 @@
 %Image::ExifTool::UserDefined = (
 
   'Image::ExifTool::Exif::Main' => {
+    0xd000 => {
+      Name => 'FotoTitle',
+      Writable => 'string',
+      WriteGroup => 'IFD0',
+    },
     0xd001 => {
       Name => 'ArtistCity',
       Writable => 'string',

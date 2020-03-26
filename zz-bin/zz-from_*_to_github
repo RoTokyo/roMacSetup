@@ -23,6 +23,8 @@ _main_code () {
 
     6. Upload blog
 
+    8. Il politrofo
+
     x. eXit
 
 _EOF_
@@ -41,7 +43,7 @@ _EOF_
     		echo ''
         echo '  build production site ... '
         echo ''
-        JEKYLL_ENV=production bundle exec jekyll build --config _config.yml,_config_prod.yml
+        #JEKYLL_ENV=production bundle exec jekyll build --config _config.yml,_config_prod.yml
         read -p "Site builded ... upload ... ?[yY]" -n 1
 	      if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
     		  echo ''
@@ -60,7 +62,7 @@ _EOF_
     		echo ''
         echo '  build production site ... '
         echo ''
-        JEKYLL_ENV=production bundle exec jekyll build --config _config.yml,_config_prod.yml --incremental
+        #JEKYLL_ENV=production bundle exec jekyll build --config _config.yml,_config_prod.yml --incremental
         read -p "Site builded ... upload ... ?[yY]" -n 1
 	      if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
     		  echo ''
@@ -79,7 +81,7 @@ _EOF_
     		echo ''
         echo '  build production site ... '
         echo ''
-        JEKYLL_ENV=production bundle exec jekyll build --config _config.yml,_config_prod.yml --incremental
+        #JEKYLL_ENV=production bundle exec jekyll build --config _config.yml,_config_prod.yml --incremental
         read -p "Site builded ... upload ... ?[yY]" -n 1
 	      if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
     		  echo ''
@@ -98,7 +100,7 @@ _EOF_
     		echo ''
         echo '  build production site ... '
         echo ''
-        JEKYLL_ENV=production bundle exec jekyll build --config _config.yml,_config_prod.yml --incremental
+        #JEKYLL_ENV=production bundle exec jekyll build --config _config.yml,_config_prod.yml
         read -p "Site builded ... upload ... ?[yY]" -n 1
 	      if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
     		  echo ''
@@ -106,6 +108,30 @@ _EOF_
           echo ''
 	        cd blog
 	        git add -A && git commit -am 'Enjoy Japan!'
+	        git push -u origin master
+	        cd ..
+	      fi
+    	fi
+
+# ilpoli Site
+    	if [[ $REPLY == 8 ]]; then
+        cd /Users/rc/Projects/008/
+        echo ''
+        echo '  build production site ... '
+        npm run jkprod
+        npm run autop
+        npm run clcss
+        npm run jkprod
+        npm run html
+        echo ''
+        #JEKYLL_ENV=production bundle exec jekyll build --config _config.yml,_config_prod.yml --incremental
+        read -p "Site builded ... upload ... ?[yY]" -n 1
+	      if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
+    		  echo ''
+          echo '  build production site ... '
+          echo ''
+	        cd ilpoli
+	        git add -A && git commit -am 'Il politrofo'
 	        git push -u origin master
 	        cd ..
 	      fi
@@ -122,5 +148,3 @@ _EOF_
 }
 
 _main_code
-
-

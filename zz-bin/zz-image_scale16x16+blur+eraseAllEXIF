@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+echo "Il processo è irreversibile ... continuo?"
+read -p "    [To exit press any key ... 1 to go] > "
+if [[ $REPLY =~ ^[1] ]]; then
+ORIGINIMGPATH="${HOME}/Pictures/ZZ-images/AA-destination"
+
+  for file in $ORIGINIMGPATH/*.jpg; do
+
+    if [[ -f ${file} ]]; then
+    # NOTA:
+    #
+    # Scala il file 16x16 e SOVRASCRIVE
+    # ATTENZIONE NON USARE SU ORIGINALI
+    #
+      mogrify \
+        ${file} \
+        -scale 16 \
+      	-filter Gaussian \
+      	-blur 0x8 \
+        ${file}
+
+    # NOTA:
+    #
+    # Cancella i metadati EXIF
+    # per ridurre il file al minimo
+    # ATTENZIONE NON USARE SU ORIGINALI
+    #
+    # exiftool -All:All= ${file}
+
+    # Cancella tutto meno i tag definiti
+      exiftool -All:All= \
+        -TagsFromFile ${file} \
+        -FotoTitle \
+        ${file}
+
+    # NOTA:
+    #
+    # Cancella i file di sicurezza
+    # Processo irreversibile
+    # ATTENZIONE NON USARE SU ORIGINALI
+    #
+      if [[ -f ${file%.*}".jpg_original" ]]; then
+        rm -f ${file%.*}".jpg_original"
+        echo "Cancellato: " ${file%.*}".jpg_original"
+      fi
+
+    fi
+
+    echo "File elaborati: " $(basename $file)
+  done
+  read -p "Fine > "
+else
+  echo "Stop"
+fi
