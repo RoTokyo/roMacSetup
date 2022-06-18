@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+LC_CTYPE=en_US.utf8
+
 echo;echo;echo "Il processo è irreversibile ... continuo?";echo;echo
 
 read -p "[To exit press any key ... 1 to go] > "
@@ -36,7 +38,7 @@ EXIFtag="-FotoTitle"
       else
         read -p "[Inserisci valore ${EXIFtag} nel file $(basename $file)] > " VALORETAG
         if [[ ! -z ${VALORETAG} ]]; then
-          exiftool ${EXIFtag}="${VALORETAG}" ${file}
+          exiftool ${EXIFtag}=${VALORETAG} ${file}
         else
           echo ${EXIFtag}" non modificato"
         fi

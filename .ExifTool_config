@@ -2,47 +2,51 @@
 
   'Image::ExifTool::Exif::Main' => {
     0xd000 => {
-      Name => 'FotoTitle',
+      Name => 'PhotoTitle',
       Writable => 'string',
       WriteGroup => 'IFD0',
     },
     0xd001 => {
-      Name => 'ArtistCity',
+      Name => 'Artist',
       Writable => 'string',
       WriteGroup => 'IFD0',
     },
     0xd002 => {
-      Name => 'ArtistCountry',
+      Name => 'ArtistCity',
       Writable => 'string',
       WriteGroup => 'IFD0',
     },
     0xd003 => {
-      Name => 'ArtistWorkURL',
+      Name => 'ArtistCountry',
       Writable => 'string',
       WriteGroup => 'IFD0',
     },
     0xd004 => {
-      Name => 'ArtistWorkEmail',
+      Name => 'ArtistWorkURL',
       Writable => 'string',
       WriteGroup => 'IFD0',
     },
     0xd005 => {
-      Name => 'CopyRightsOwner',
+      Name => 'ArtistWorkEmail',
       Writable => 'string',
       WriteGroup => 'IFD0',
     },
     0xd006 => {
-      Name => 'UsageTerms',
+      Name => 'CopyrightsOwner',
       Writable => 'string',
       WriteGroup => 'IFD0',
     },
     0xd007 => {
-      Name => 'UsageWebStatement',
+      Name => 'UsageTermsStatement',
+      Writable => 'string',
+      WriteGroup => 'IFD0',
+    },
+    0xd008 => {
+      Name => 'CopyrightFlag',
       Writable => 'string',
       WriteGroup => 'IFD0',
     },
   },
 );
-
 
 

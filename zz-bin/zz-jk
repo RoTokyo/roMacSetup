@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+#
+# jekyll management
+
+for arg in "$@"
+do
+  case "${arg}" in
+    -d|--sviluppo)
+      dev='JEKYLL_ENV=development'
+      ;;
+    -p|--publish)
+      pub='JEKYLL_ENV=production'
+      ;;
+    -s|--serve)
+      opt='serve'
+      ;;
+    -b|--build)
+      opt='build'
+      ;;
+    -h|--help)
+      echo "   Jekyll management"
+      echo
+      echo "   Usage: $0 [options]"
+      echo
+      echo "  -d   JEKYLL_ENV=development     "
+      echo "  -p   JEKYLL_ENV=production      "
+      echo "  -s   serve"
+      echo "  -b   build"
+      exit 0
+      ;;
+    *)
+      echo "Unknown argument: $1" 1>&2
+      echo "For help, use: $0 --help" 1>&2
+      exit 1
+      ;;
+  esac
+done

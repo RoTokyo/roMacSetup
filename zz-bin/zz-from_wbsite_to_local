@@ -141,7 +141,7 @@ _EOF_
     	    mkdir "${DESTIN}"
     	  fi
     	  cd $HOME/Projects/008/
-    	  #JEKYLL_ENV=development bundle exec jekyll build --config _config.yml
+    	  JEKYLL_ENV=development bundle exec jekyll build --config _config.yml
     	  _f_rsync_file --delete $ORIGIN $DESTIN
     	fi
 

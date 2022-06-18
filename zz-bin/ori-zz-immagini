@@ -33,14 +33,17 @@ ORIGINIMGPATH="${HOME}/Pictures/ZZ-images/AA-destination"
     # Da qui uso il file di configurazione
     # .ExifTool_config situato in ~/
       exiftool \
+        -PhotoTitle=${TITLE} \
+        -Creator="Roberto Calesini" \
+        -Rights="© 2013 Roberto Calesini. All rights reserved." \
         -Artist="roTokyo" \
         -ArtistCity="Tokyo" \
         -ArtistCountry="Japan" \
-        -ArtistWorkURL="https://rotokyo.github.io" \
+        -ArtistWorkURL="https://www.flickr.com/photos/rotokyo/albums" \
         -ArtistWorkEmail="rotokyo@icloud.com" \
-        -CopyRightsOwner="Roberto Calesini" \
-        -UsageTerms="--CC BY-NC-SA 4.0--" \
-        -UsageWebStatement="https://creativecommons.org/licenses/by-nc-sa/4.0/" \
+        -CopyrightsOwner="© 2013 Roberto Calesini aka roTokyo" \
+        -UsageTermsStatement="For evaluation only, no reproduction is permitted without written permission by copyrights owner." \
+        -CopyrightFlag=true \
         ${file}
     fi
 
