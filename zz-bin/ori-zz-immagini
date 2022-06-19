@@ -3,7 +3,7 @@
 echo "Il processo è irreversibile ... continuo?"
 read -p "    [To exit press any key ... 1 to go] > "
 if [[ $REPLY =~ ^[1] ]]; then
-ORIGINIMGPATH="${HOME}/Pictures/ZZ-images/AA-destination"
+ORIGINIMGPATH="${HOME}/Desktop/a"
 
   for file in $ORIGINIMGPATH/*.jpg; do
 

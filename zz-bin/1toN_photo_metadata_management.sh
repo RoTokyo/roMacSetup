@@ -100,6 +100,10 @@ _EOF_
 
   	  for file in $ORIGINIMGPATH/*.jpg; do
   	    if [[ -f ${file} ]]; then
+ 
+        read -p 'Insert photo title (*): ...' TITLE
+        echo
+
           exiftool -All:All= \
             -TagsFromFile ${file} \
             -Make -Model \
