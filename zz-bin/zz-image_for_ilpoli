@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+
+read -p "    [To exit press any key ... 1 to go] > "
+if [[ $REPLY =~ ^[1] ]]; then
+
+ORIGINIMGPATH="${HOME}/Desktop/a"
+DESTBLUR="${ORIGINIMGPATH}/blur"
+DESTTHUMB="${ORIGINIMGPATH}/thumb"
+
+  for file in $ORIGINIMGPATH/*.jpg; do
+    # NOTA:
+    # Scala il file 420x420 e SOVRASCRIVE
+    #
+    if [[ -f ${file} ]]; then
+
+    exiftool \
+      -All= --ICC_Profile:All \
+      -TagsFromFile ${file} \
+      -PhotoTitle \
+      -Make -Model \
+      -ExposureTime \
+      -FNumber \
+      -ISO \
+      -FocalLength \
+      -LensModel \
+      ${file}
+
+    read -p 'Insert photo title (*): ...' TITLE
+    echo ''
+
+    exiftool \
+      -PhotoTitle="${TITLE}" \
+      -Creator="Roberto Calesini" \
+      -Rights="© 2013 Roberto Calesini. All rights reserved." \
+      -Artist="roTokyo" \
+      -ArtistCity="Tokyo" \
+      -ArtistCountry="Japan" \
+      -ArtistWorkURL="https://www.flickr.com/photos/rotokyo/albums" \
+      -ArtistWorkEmail="rotokyo@icloud.com" \
+      -CopyrightsOwner="© 2013 Roberto Calesini aka roTokyo" \
+      -UsageTermsStatement="For evaluation only, no reproduction is permitted without written permission by copyrights owner." \
+      -CopyrightFlag=true \
+      ${file}
+    echo "File: ${file} modified! ... "
+
+
+      # NOTA: 
+      mogrify \
+        -scale 16 \
+      	-filter Gaussian \
+      	-blur 0x8 \
+        -path ${DESTBLUR} \
+        ${file}
+
+
+      mogrify \
+      	-scale 420 \
+      	-quality 85 \
+      	-define jpeg:fancy-upsampling=off \
+        -unsharp 0.25x0.25+8+0.065 \
+        -dither None \
+        -interlace none \
+        -colorspace sRGB \
+        -path ${DESTTHUMB} \
+        ${file}
+      echo "File elaborati: " $file
+
+    else
+      echo "Files non trovati"
+    fi
+
+  done
+
+else
+  echo "Stop"
+fi

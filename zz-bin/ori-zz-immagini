@@ -2,49 +2,68 @@
 
 echo "Il processo è irreversibile ... continuo?"
 read -p "    [To exit press any key ... 1 to go] > "
+
 if [[ $REPLY =~ ^[1] ]]; then
+
 ORIGINIMGPATH="${HOME}/Desktop/a"
 
-  for file in $ORIGINIMGPATH/*.jpg; do
+for file in $ORIGINIMGPATH/*.jpg; do
 
-    if [[ -f ${file} ]]; then
-      mogrify \
-        ${file} \
-        -crop 420x420+0+0 \
-        -unsharp 0.25x0.25+8+0.065 \
-        -dither None \
-        -posterize 136 \
-        -define jpeg:fancy-upsampling=off \
-        -interlace none \
-        -colorspace sRGB \
-        ${file}
-    # NOTA:
-    # Cancella tutto meno i tag definiti
-      exiftool -All:All= \
-        -TagsFromFile ${file} \
-        -Make -Model \
-        -ExposureTime \
-        -FNumber \
-        -ISO \
-        -FocalLength \
-        -LensModel \
-        ${file}
-    # NOTA:
-    # Da qui uso il file di configurazione
-    # .ExifTool_config situato in ~/
-      exiftool \
-        -PhotoTitle=${TITLE} \
-        -Creator="Roberto Calesini" \
-        -Rights="© 2013 Roberto Calesini. All rights reserved." \
-        -Artist="roTokyo" \
-        -ArtistCity="Tokyo" \
-        -ArtistCountry="Japan" \
-        -ArtistWorkURL="https://www.flickr.com/photos/rotokyo/albums" \
-        -ArtistWorkEmail="rotokyo@icloud.com" \
-        -CopyrightsOwner="© 2013 Roberto Calesini aka roTokyo" \
-        -UsageTermsStatement="For evaluation only, no reproduction is permitted without written permission by copyrights owner." \
-        -CopyrightFlag=true \
-        ${file}
+  if [[ -f ${file} ]]; then
+    mogrify \
+      ${file} \
+      -crop 420x420+0+0 \
+      -unsharp 0.25x0.25+8+0.065 \
+      -dither None \
+      -posterize 136 \
+      -define jpeg:fancy-upsampling=off \
+      -interlace none \
+      -colorspace sRGB \
+      ${file}
+
+# NOTA:
+# Cancella tutto meno i tag definiti
+# -ProfileDescription="sRGB IEC61966-2.1"
+
+    exiftool \
+      -All= --ICC_Profile:All \
+      -TagsFromFile ${file} \
+      -PhotoTitle \
+      -Make -Model \
+      -ExposureTime \
+      -FNumber \
+      -ISO \
+      -FocalLength \
+      -LensModel \
+      ${file}
+
+# -LensModel="Fujifilm XF 18-55mm F2.8-4 R LM OIS" \
+# -LensModel="Sigma 30mm F1.4 DC HSM Art" \
+# -LensModel="Nikon 105mm F2.8D Micro Nikkor" \
+# -LensModel="Sigma 105mm F2.8 DG Macro HSM" \
+
+# NOTA:
+# Da qui uso il file di configurazione
+# .ExifTool_config situato in ~/
+
+    read -p 'Insert photo title (*): ...' TITLE
+    echo ''
+
+    exiftool \
+      -PhotoTitle="${TITLE}" \
+      -Creator="Roberto Calesini" \
+      -Rights="© 2013 Roberto Calesini. All rights reserved." \
+      -Artist="roTokyo" \
+      -ArtistCity="Tokyo" \
+      -ArtistCountry="Japan" \
+      -ArtistWorkURL="https://www.flickr.com/photos/rotokyo/albums" \
+      -ArtistWorkEmail="rotokyo@icloud.com" \
+      -CopyrightsOwner="© 2013 Roberto Calesini aka roTokyo" \
+      -UsageTermsStatement="For evaluation only, no reproduction is permitted without written permission by copyrights owner." \
+      -CopyrightFlag=true \
+      ${file}
+    echo "File: ${file} modified! ... "
+
     fi
 
     # estrae nome file completo: echo $(basename "$(dirname "$file")") con spazi vuoti
@@ -53,11 +72,12 @@ ORIGINIMGPATH="${HOME}/Desktop/a"
     # Estrae nome file: echo "${file%.*}"
     # Estrae estensione: echo "${file##*.}"
     # nomefiledacancellare="${file%.*}.jpg_original"
-    echo "File elaborati: " $(basename $file)
-    if [[ -f ${file%.*}".jpg_original" ]]; then
-      rm -f ${file%.*}".jpg_original"
-      echo "Cancellato: " ${file%.*}".jpg_original"
-    fi
+    # echo "File elaborati: " $(basename $file)
+    # if [[ -f ${file%.*}".jpg_original" ]]; then
+    #    rm -f ${file%.*}".jpg_original"
+    #   echo "Cancellato: " ${file%.*}".jpg_original"
+    # fi
+
   done
   read -p "Fine > "
 else

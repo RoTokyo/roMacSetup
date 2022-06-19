@@ -11,22 +11,27 @@ ORIGINIMGPATH="${HOME}/Desktop"
 
 read -p 'Insert file name ... :'
 echo ''
+
 if [[ "${REPLY}" != "" && -f "${ORIGINIMGPATH}/${REPLY}" ]]; then
 
   read -p 'Insert photo title (*): ...' TITLE
   echo ''
 
-  echo "${ORIGINIMGPATH}/${REPLY}"
-# erase all image metadata
-  exiftool -All:All= \
-    -TagsFromFile ${ORIGINIMGPATH}/${REPLY} \
-  	-Make -Model \
-  	-ExposureTime \
-    -FNumber \
-    -ISO \
-    -FocalLength \
-    -LensModel \
-    ${ORIGINIMGPATH}/${REPLY}
+  # erase all image metadata
+  # -ProfileDescription="sRGB IEC61966-2.1"
+
+  #  exiftool \
+      -All= --ICC_Profile:All \
+      -TagsFromFile ${ORIGINIMGPATH}/${REPLY} \
+      -PhotoTitle \
+      -ProfileDescription \
+    	-Make -Model \
+    	-ExposureTime \
+      -FNumber \
+      -ISO \
+      -FocalLength \
+      -LensModel \
+      ${ORIGINIMGPATH}/${REPLY}
 
 # write copyrights data
 # Modifiche:
