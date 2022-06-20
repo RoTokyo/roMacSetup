@@ -9,14 +9,17 @@
 # convert octocat.png   -background 'rgb(230, 46, 104)' -alpha background -flatten  png_sma.jpg
 
 
-ORIGINIMGPATH="${HOME}/Pictures/ZZ-images/AA-source/"
-DESTINIMGPATH="${HOME}/Pictures/ZZ-images/AA-destination/"
+ORIGINIMGPATH="${HOME}/Desktop/a"
+DESTINIMGPATH="${HOME}/Desktop/b"
 
 function _jpg_minimize () {
   unset REPLY
-  seek_confirmation "Insert jpg file name ... without extention ... :"
+  seek_confirmation "Insert jpg file name ... without extention ... :  "
   if is_confirmed
     then
+
+			seek_for_title "Insert image title ... :   "
+
       convert \
 	    ${ORIGINIMGPATH}/${REPLY}.jpg \
 	    -density 72 \
@@ -28,32 +31,40 @@ function _jpg_minimize () {
 	    -colorspace sRGB \
 	    -strip \
 	    ${DESTINIMGPATH}/${REPLY}.jpg
+
+		_add_copyrights
+
   fi
   read -p "$(_f_alert_success 'Press any button to EXIT ⧳ ')" -n 1
 }
 
 function _roTokyo_image () {
-  unset REPLY
-  seek_confirmation "Insert jpg file name ... without extention ... :"
+  unset REPLY SCALA TITLE
+  seek_confirmation "Insert jpg file name ... without extention ... :  "
   if is_confirmed
     then
-      if [[ $(identify -ping -format '%w' ${ORIGINIMGPATH}${REPLY}.jpg) -ge '1200' ]]; then
-    	  _convert_1200; 	_f_alert_info "File $REPLY.jpg creato."
-			  _convert_thumb; _f_alert_info "File $REPLY-thumb.jpg creato."
-	  	  _convert_blur; 	_f_alert_info "File $REPLY-blur.jpg creato."
-	  	else
+      if [[ $(identify -ping -format '%w' ${ORIGINIMGPATH}/${REPLY}.jpg) -ge '1200' ]]; then
+				
+				seek_for_title "Insert image title ... :   " 
+
+				_convert; 	_f_alert_info "File $REPLY.jpg creato.";
+			  _convert_thumb;           _f_alert_info "File $REPLY-thumb.jpg creato."
+	  	  _convert_blur; 	          _f_alert_info "File $REPLY-blur.jpg creato."
+	  	
+			else
 	  	  _f_alert_warning "Image file too small!"
 	  	fi
   fi
+	unset TITLE
   read -p "$(_f_alert_success 'Press any button to EXIT ⧳ ')" -n 1
 }
 
 function _blur_image () {
   unset REPLY
-  seek_confirmation "Insert jpg file name ... without extention ... :"
+  seek_confirmation "Insert jpg file name ... without extention ... :  "
   if is_confirmed
     then
-      if [[ $(identify -ping -format '%w' ${ORIGINIMGPATH}${REPLY}.jpg) -ge '24' ]]; then
+      if [[ $(identify -ping -format '%w' ${ORIGINIMGPATH}/${REPLY}.jpg) -ge '24' ]]; then
 	  	  _convert_blur; 	_f_alert_info "File $REPLY-blur.jpg creato."
 	  	else
 	  	  _f_alert_warning "Image file too small!"
@@ -64,31 +75,35 @@ function _blur_image () {
 
 function _responsive_image () {
   unset REPLY
-  seek_confirmation "Insert jpg file name ... without extention ... :"
+  seek_confirmation "Insert jpg file name ... without extention ... :  "
   if is_confirmed
     then
-      if [[ $(identify -ping -format '%w' ${ORIGINIMGPATH}${REPLY}.jpg) -ge '1920' ]]; then
-				_convert_1920;  _f_alert_info "File $REPLY-1920.jpg creato."
-				_convert_1600;  _f_alert_info "File $REPLY-1600.jpg creato."
-				_convert_1440;  _f_alert_info "File $REPLY-1440.jpg creato."
-				_convert_1200;  _f_alert_info "File $REPLY-1200fb.jpg creato."
-				_convert_1024;  _f_alert_info "File $REPLY-1024.jpg creato."
-				_convert_768;   _f_alert_info "File $REPLY-768.jpg creato."
-				_convert_640;   _f_alert_info "File $REPLY-640.jpg creato."
-			  _convert_thumb; _f_alert_info "File $REPLY-thumb.jpg creato."
-	  	  _convert_blur;  _f_alert_info "File $REPLY-blur.jpg creato."
+      if [[ $(identify -ping -format '%w' ${ORIGINIMGPATH}/${REPLY}.jpg) -ge '1920' ]]; then
+
+				seek_for_title "Insert image title ... :  "
+
+				SCALA="1920";   _convert;  				_f_alert_info "File $REPLY-$SCALA.jpg creato."; unset SCALA
+				SCALA="1600";   _convert;  				_f_alert_info "File $REPLY-$SCALA.jpg creato."; unset SCALA
+				SCALA="1440";   _convert;  				_f_alert_info "File $REPLY-$SCALA.jpg creato."; unset SCALA
+				SCALA="1200";   _convert;  				_f_alert_info "File $REPLY-$SCALA.jpg creato."; unset SCALA
+				SCALA="1024";   _convert;  				_f_alert_info "File $REPLY-$SCALA.jpg creato."; unset SCALA
+				SCALA="768";    _convert;  				_f_alert_info "File $REPLY-$SCALA.jpg creato."; unset SCALA
+				SCALA="640";    _convert;  				_f_alert_info "File $REPLY-$SCALA.jpg creato."; unset SCALA
+			                  _convert_thumb; 	_f_alert_info "File $REPLY-thumb.jpg creato."
+	  	                  _convert_blur;  	_f_alert_info "File $REPLY-blur.jpg creato."
 	  	fi
   fi
-  read -p "$(_f_alert_success 'Press any button to EXIT ⧳ ')" -n 1
+  unset TITLE
+	read -p "$(_f_alert_success 'Press any button to EXIT ⧳ ')" -n 1
 }
 
 function _resize_image () {
   unset REPLY
-  seek_confirmation "Insert jpg file name ... without extention ... :"
+  seek_confirmation "Insert jpg file name ... without extention ... :  "
   if is_confirmed
     then
       read -p "$(_f_alert_input "Insert size:")" RESIZE
-      if [[ $(identify -ping -format '%w' ${ORIGINIMGPATH}${REPLY}.jpg) -ge ${RESIZE} ]]; then
+      if [[ $(identify -ping -format '%w' ${ORIGINIMGPATH}/${REPLY}.jpg) -ge ${RESIZE} ]]; then
         convert \
         ${ORIGINIMGPATH}/${REPLY}.jpg \
         -scale ${RESIZE} \
@@ -101,41 +116,18 @@ function _resize_image () {
   fi
 }
 
-function _convert_1920 () {
-  convert \
-	${ORIGINIMGPATH}/${REPLY}.jpg \
-	-density 72 \
-	-scale 1920 \
-	-quality 85 \
-	-define jpeg:fancy-upsampling=off \
-	-unsharp 0.25x0.25+8+0.065 \
-	-dither None \
-	-interlace none \
-	-colorspace sRGB \
-	-strip \
-	${DESTINIMGPATH}/${REPLY}-1920.jpg
-}
+function _convert () {
+	FILE_SUFF="-$SCALA"
 
-function _convert_1600 () {
-  convert \
-	${ORIGINIMGPATH}/${REPLY}.jpg \
-	-density 72 \
-	-scale 1600 \
-	-quality 85 \
-	-define jpeg:fancy-upsampling=off \
-	-unsharp 0.25x0.25+8+0.065 \
-	-dither None \
-	-interlace none \
-	-colorspace sRGB \
-	-strip \
-	${DESTINIMGPATH}/${REPLY}-1600.jpg
-}
+  if [[ "${SCALA}" == "" ]]; then
+    SCALA="1200"
+		FILE_SUFF=""
+  fi
 
-function _convert_1440 () {
   convert \
 	${ORIGINIMGPATH}/${REPLY}.jpg \
 	-density 72 \
-	-scale 1440 \
+	-scale ${SCALA} \
 	-quality 85 \
 	-define jpeg:fancy-upsampling=off \
 	-unsharp 0.25x0.25+8+0.065 \
@@ -143,7 +135,10 @@ function _convert_1440 () {
 	-interlace none \
 	-colorspace sRGB \
 	-strip \
-	${DESTINIMGPATH}/${REPLY}-1440.jpg
+	${DESTINIMGPATH}/${REPLY}${FILE_SUFF}.jpg
+
+	_add_copyrights "$FILE_SUFF"
+
 }
 
 function _convert_1200 () {
@@ -158,52 +153,12 @@ function _convert_1200 () {
 	-interlace none \
 	-colorspace sRGB \
 	-strip \
-	${DESTINIMGPATH}/${REPLY}-1200fb.jpg
+	${DESTINIMGPATH}/${REPLY}${FILE_SUFF}.jpg
+
+	_add_copyrights "$FILE_SUFF"
+
 }
 
-function _convert_1024 () {
-	convert \
-	${ORIGINIMGPATH}/${REPLY}.jpg \
-	-resize 1024 \
-	-quality 85 \
-	-define jpeg:fancy-upsampling=off \
-	-unsharp 0.25x0.25+8+0.065 \
-	-dither None \
-	-interlace none \
-	-colorspace sRGB \
-	-strip \
-	${DESTINIMGPATH}/${REPLY}-1024.jpg
-}
-
-function _convert_768 () {
-  convert \
-	${ORIGINIMGPATH}/${REPLY}.jpg \
-	-density 72 \
-	-scale 768 \
-	-quality 85 \
-	-define jpeg:fancy-upsampling=off \
-	-unsharp 0.25x0.25+8+0.065 \
-	-dither None \
-	-interlace none \
-	-colorspace sRGB \
-	-strip \
-	${DESTINIMGPATH}/${REPLY}-768.jpg
-}
-
-function _convert_640 () {
-  convert \
-	${ORIGINIMGPATH}/${REPLY}.jpg \
-	-density 72 \
-	-scale 640 \
-	-quality 85 \
-	-define jpeg:fancy-upsampling=off \
-	-unsharp 0.25x0.25+8+0.065 \
-	-dither None \
-	-interlace none \
-	-colorspace sRGB \
-	-strip \
-	${DESTINIMGPATH}/${REPLY}-640.jpg
-}
 
 function _convert_thumb () {
   convert \
@@ -225,9 +180,35 @@ function _convert_blur () {
 	-thumbnail 24x16 \
 	-filter Gaussian \
 	-blur 0x8 \
+	-strip \
 	${DESTINIMGPATH}/${REPLY}-blur.jpg
 }
 
+function _add_copyrights () {
+
+	echo ${TITLE}
+	exiftool \
+		-PhotoTitle="${TITLE}" \
+		-Creator="Roberto Calesini" \
+		-Rights="© 2013 Roberto Calesini. All rights reserved." \
+		-Artist="roTokyo" \
+		-ArtistCity="Tokyo" \
+		-ArtistCountry="Japan" \
+		-ArtistWorkURL="https://www.flickr.com/photos/rotokyo/albums" \
+		-ArtistWorkEmail="rotokyo@icloud.com" \
+		-CopyrightsOwner="© 2013 Roberto Calesini aka roTokyo" \
+		-UsageTermsStatement="For evaluation only, no reproduction is permitted without written permission by copyrights owner." \
+		-CopyrightFlag=true \
+		${DESTINIMGPATH}/${REPLY}${FILE_SUFF}.jpg
+	
+	unset FILE_SUFF
+
+}
+
+function seek_for_title() {
+  read -p "$(_f_alert_input "$@")" TITLE
+  echo ''
+}
 
 function seek_confirmation() {
   read -p "$(_f_alert_input "$@")" REPLY
@@ -235,7 +216,7 @@ function seek_confirmation() {
 }
 
 function is_confirmed() {
-  if [[ "${REPLY}" != "" && -f "${ORIGINIMGPATH}${REPLY}.jpg" ]]; then
+  if [[ "${REPLY}" != "" && -f "${ORIGINIMGPATH}/${REPLY}.jpg" ]]; then
     return 0
   fi
   _f_alert_warning "Enter a valid file name!"

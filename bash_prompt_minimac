@@ -1,0 +1,24 @@
+#*******************************
+# Prompt
+# ******************************
+
+# ********** Change Info **********
+echo -ne '\033[0;39mKernel Information: \033[0;31m' ;uname -smr
+echo -ne "\033[0;39mUptime: \033[0;31m"; uptime
+echo -ne "\033[0;39mServer time is: \033[0;31m"; date
+
+
+# ********** Change Prompt *********
+function git_branch_name() {
+    branch=$(git symbolic-ref HEAD 2> /dev/null | awk 'BEGIN{FS="/"} {print $NF}')
+    if [[ ! $branch == "" ]]; then
+        echo "*"$branch
+    fi
+}
+
+setopt prompt_subst                                       # Enable substitution in the prompt
+autoload -U colors && colors                              # Enable colors in prompt
+
+PROMPT='
+%F{red}%n@%m%f in %2~ %F{yellow}$(git_branch_name)
+%f><(((º> '

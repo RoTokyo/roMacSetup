@@ -1,0 +1,27 @@
+# ********** In uso
+alias cls='clear'
+alias flush='dscacheutil -flushcache'                    # Flush dns cache
+alias reload='cls; source ~/.zshrc'               # Update bash profile
+alias dsclean='find . -type f -name .DS_Store -delete'   # Get rid of .DS_Store files recursively
+
+alias ss='sudo apachectl start'                          # Start server
+alias qs='sudo apachectl graceful-stop'                  # Stop server
+
+alias show='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
+alias hide='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'
+
+# ********** Git 
+alias giti='git init'
+alias gits='git status && git pull'
+alias gita='git add -A && git status'
+alias gitcom='git commit -am'
+alias gitacom='git add -A && git commit -am'
+alias gitpop='git push -u origin gh-pages'
+alias gitpom='git push -u origin master'
+alias gitlog='git log --pretty=oneline'
+
+# ****** Ruby Gems Commands **********
+alias unallgems='for i in `gem list --no-versions`; do gem uninstall -aIx $i; done'
+
+alias meta='/Users/ro/Documents/Projects/roMacSetup/zz-bin/1to1_photo_metadata_management.sh'
+alias mets='/Users/ro/Documents/Projects/roMacSetup/zz-bin/1toN_photo_metadata_management.sh'
