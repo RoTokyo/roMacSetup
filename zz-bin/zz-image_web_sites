@@ -13,7 +13,7 @@ ORIGINIMGPATH="${HOME}/Desktop/a"
 DESTINIMGPATH="${HOME}/Desktop/b"
 
 function _jpg_minimize () {
-  unset REPLY
+  unset REPLY TITLE
   seek_confirmation "Insert jpg file name ... without extention ... :  "
   if is_confirmed
     then
@@ -60,7 +60,7 @@ function _roTokyo_image () {
 }
 
 function _blur_image () {
-  unset REPLY
+  unset REPLY TITLE
   seek_confirmation "Insert jpg file name ... without extention ... :  "
   if is_confirmed
     then
@@ -74,27 +74,28 @@ function _blur_image () {
 }
 
 function _responsive_image () {
-  unset REPLY
+  unset REPLY SCALA TITLE
   seek_confirmation "Insert jpg file name ... without extention ... :  "
   if is_confirmed
     then
       if [[ $(identify -ping -format '%w' ${ORIGINIMGPATH}/${REPLY}.jpg) -ge '1920' ]]; then
 
 				seek_for_title "Insert image title ... :  "
+				array=("1920" "1600" "1440" "1200" "1024" "768" "640")
 
-				SCALA="1920";   _convert;  				_f_alert_info "File $REPLY-$SCALA.jpg creato."; unset SCALA
-				SCALA="1600";   _convert;  				_f_alert_info "File $REPLY-$SCALA.jpg creato."; unset SCALA
-				SCALA="1440";   _convert;  				_f_alert_info "File $REPLY-$SCALA.jpg creato."; unset SCALA
-				SCALA="1200";   _convert;  				_f_alert_info "File $REPLY-$SCALA.jpg creato."; unset SCALA
-				SCALA="1024";   _convert;  				_f_alert_info "File $REPLY-$SCALA.jpg creato."; unset SCALA
-				SCALA="768";    _convert;  				_f_alert_info "File $REPLY-$SCALA.jpg creato."; unset SCALA
-				SCALA="640";    _convert;  				_f_alert_info "File $REPLY-$SCALA.jpg creato."; unset SCALA
-			                  _convert_thumb; 	_f_alert_info "File $REPLY-thumb.jpg creato."
-	  	                  _convert_blur;  	_f_alert_info "File $REPLY-blur.jpg creato."
+				for SCALA in "${array[@]}"
+					do
+						_convert
+						_f_alert_info "File $REPLY-$SCALA.jpg creato."
+					done
+
+				_convert_thumb; 	_f_alert_info "File $REPLY-thumb.jpg creato."
+				_convert_blur;  	_f_alert_info "File $REPLY-blur.jpg creato."
+
 	  	fi
   fi
-  unset TITLE
 	read -p "$(_f_alert_success 'Press any button to EXIT ⧳ ')" -n 1
+
 }
 
 function _resize_image () {
@@ -186,7 +187,6 @@ function _convert_blur () {
 
 function _add_copyrights () {
 
-	echo ${TITLE}
 	exiftool \
 		-PhotoTitle="${TITLE}" \
 		-Creator="Roberto Calesini" \
