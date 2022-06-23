@@ -1,0 +1,300 @@
+#!/usr/bin/env bash
+
+# **********************************
+# *                                *
+# *   Prepare image files for web  *
+# *                                *
+#***********************************
+#
+# convert octocat.png   -background 'rgb(230, 46, 104)' -alpha background -flatten  png_sma.jpg
+
+
+ORIGINIMGPATH="${HOME}/Desktop/a"
+DESTINIMGPATH="${HOME}/Desktop/b"
+
+function _jpg_minimize () {
+	convert \
+	${ORIGINIMGPATH}/${IMGFILENAME}.jpg \
+	-density 72 \
+	-quality 85 \
+	-define jpeg:fancy-upsampling=off \
+	-unsharp 0.25x0.25+8+0.065 \
+	-dither None \
+	-interlace none \
+	-colorspace sRGB \
+	-strip \
+	${DESTINIMGPATH}/${IMGFILENAME}.jpg
+
+	_add_copyrights
+
+  read -p "$(_f_alert_success 'Press any button to EXIT ⧳ ')" -n 1
+}
+
+function _roTokyo_image () {
+ 
+	if [[ $(identify -ping -format '%w' ${ORIGINIMGPATH}/${IMGFILENAME}.jpg) -ge '1200' ]]; then
+		_convert; 								_f_alert_info "File $REPLY.jpg creato.";
+		_convert_thumb;           _f_alert_info "File $REPLY-thumb.jpg creato."
+	  _convert_blur; 	          _f_alert_info "File $REPLY-blur.jpg creato."
+		else
+	  	_f_alert_warning "Image file too small!"
+	fi
+	
+  read -p "$(_f_alert_success 'Press any button to EXIT ⧳ ')" -n 1
+}
+
+function _responsive_image () {
+  if [[ $(identify -ping -format '%w' ${ORIGINIMGPATH}/${IMGFILENAME}.jpg) -ge '1920' ]]; then
+		array=("1920" "1600") # "1440" "1200" "1024" "768" "640")
+
+		for SCALA in "${array[@]}"
+			do
+				_convert
+				_f_alert_info "File $IMGFILENAME-$SCALA.jpg creato."
+			done
+
+		_convert_thumb; 	_f_alert_info "File $REPLY-thumb.jpg creato."
+		_convert_blur;  	_f_alert_info "File $REPLY-blur.jpg creato."
+
+  fi
+	read -p "$(_f_alert_success 'Press any button to EXIT ⧳ ')" -n 1
+
+}
+
+function _convert () {
+	FILE_SUFF="-$SCALA"
+
+  if [[ "${SCALA}" == "" ]]; then
+    SCALA="1200"
+		FILE_SUFF=""
+  fi
+
+  convert \
+		${ORIGINIMGPATH}/${IMGFILENAME}.jpg \
+		-density 72 \
+		-scale ${SCALA} \
+		-quality 85 \
+		-define jpeg:fancy-upsampling=off \
+		-unsharp 0.25x0.25+8+0.065 \
+		-dither None \
+		-interlace none \
+		-colorspace sRGB \
+		-strip \
+		${DESTINIMGPATH}/${IMGFILENAME}${FILE_SUFF}.jpg
+
+
+	_add_copyrights "$FILE_SUFF"
+
+}
+
+function _convert_thumb () {
+  convert \
+  ${ORIGINIMGPATH}/${IMGFILENAME}.jpg \
+	-thumbnail 420x280 \
+	-unsharp 0.25x0.25+8+0.065 \
+	-dither None \
+	-posterize 136 \
+	-define jpeg:fancy-upsampling=off \
+	-interlace none \
+	-colorspace sRGB \
+	-strip \
+	${DESTINIMGPATH}/${IMGFILENAME}-thumb.jpg
+}
+
+function _convert_blur () {
+  convert \
+	${ORIGINIMGPATH}/${IMGFILENAME}.jpg \
+	-thumbnail 24x16 \
+	-filter Gaussian \
+	-blur 0x8 \
+	-strip \
+	${DESTINIMGPATH}/${IMGFILENAME}-blur.jpg
+}
+
+function _resize_image () {
+  
+	read -p "$(_f_alert_input "Insert size:")" RESIZE
+ 
+    if [[ $(identify -ping -format '%w' ${ORIGINIMGPATH}/${IMGFILENAME}.jpg) -ge ${RESIZE} ]]; then
+ 
+			#_ask_for_img_title "Insert image title ... :   "
+			READREPLY="Do you want to modify METADATA? [y] ... :   "
+			read -p "$(_f_alert_input "$READREPLY")" READREPLY
+			echo ''	
+
+			if [[ ${READREPLY} == y ]]; then
+
+				convert \
+					${ORIGINIMGPATH}/${IMGFILENAME}.jpg \
+					-scale ${RESIZE} \
+					-strip \
+					${DESTINIMGPATH}/${IMGFILENAME}-${RESIZE}.jpg
+
+				FILE_SUFF="-$RESIZE"
+				_add_copyrights
+
+				else
+					convert \
+						${ORIGINIMGPATH}/${IMGFILENAME}.jpg \
+						-scale ${RESIZE} \
+						-strip \
+						${DESTINIMGPATH}/${IMGFILENAME}-${RESIZE}.jpg			
+		
+			fi
+
+			_f_alert_info "File $IMGFILENAME-$RESIZE.jpg creato."
+
+      read -p "$(_f_alert_success 'Press any button to EXIT ⧳ ')" -n 1
+	  	else
+	  	  _f_alert_warning "Image file too small!"
+    fi
+}
+
+function _add_copyrights () {
+
+	exiftool \
+		-PhotoTitle="${IMGTITLE}" \
+		-Creator="Roberto Calesini" \
+		-Rights="© 2013 Roberto Calesini. All rights reserved." \
+		-Artist="roTokyo" \
+		-ArtistCity="Tokyo" \
+		-ArtistCountry="Japan" \
+		-ArtistWorkURL="https://www.flickr.com/photos/rotokyo/albums" \
+		-ArtistWorkEmail="rotokyo@icloud.com" \
+		-CopyrightsOwner="© 2013 Roberto Calesini aka roTokyo" \
+		-UsageTermsStatement="For evaluation only, no reproduction is permitted without written permission by copyrights owner." \
+		-CopyrightFlag=true \
+		${DESTINIMGPATH}/${IMGFILENAME}${FILE_SUFF}.jpg
+
+}
+
+function _ask_for__img_file_name () {
+	unset IMGFILENAME IMGTITLE SCALA FILE_SUFF RESIZE
+	seek_confirmation "Insert jpg file name ... without extention ... :  "
+	if is_confirmed
+		then
+			#_ask_for_img_title "Insert image title ... :   "
+			READIMGTITLE="Insert image title ... :   "
+			read -p "$(_f_alert_input "$READIMGTITLE")" IMGTITLE
+			echo ''
+	fi
+}
+
+function seek_confirmation () {
+  read -p "$(_f_alert_input "$@")" IMGFILENAME
+  echo ''
+}
+
+function is_confirmed () {
+  if [[ "${IMGFILENAME}" != "" && -f "${ORIGINIMGPATH}/${IMGFILENAME}.jpg" ]]; then
+    return 0
+  fi
+  _f_alert_warning "Enter a valid file name!"
+  return 1
+}
+
+_alert() {
+
+  ORANGE=$(tput setaf 166)
+	RED=$(tput setaf 1)
+	RESET=$(tput sgr0)
+	TAN=$(tput setaf 3)
+
+	if [[ "${1}" = "info" || "${1}" = "notice" ]];    then local COLOR=""; fi
+	if [[ "${1}" = "input" ]];   then local COLOR="${RED}"; fi
+	if [[ "${1}" = "success" ]]; then local COLOR="${TAN}"; fi
+	if [[ "${1}" = "warning" ]]; then local COLOR="${RED}"; fi
+	if [[ "${1}" = "menu" ]];    then local COLOR="${ORANGE}"; fi
+
+	echo -e "${COLOR}$(printf "[%9s]" "${1}") ${MESSAGE}${RESET}"
+}
+
+
+_f_alert_info ()      { local MESSAGE="${*}"; echo "$(_alert info)"; }
+_f_alert_input ()     { local MESSAGE="${*}"; echo "$(_alert input)"; }
+_f_alert_notice ()    { local MESSAGE="${*}"; echo "$(_alert notice)"; }
+_f_alert_menu()       { local MESSAGE="${*}"; echo "$(_alert menu)"; }
+_f_alert_success ()   { local MESSAGE="${*}"; echo "$(_alert success)"; }
+_f_alert_warning ()   { local MESSAGE="${*}"; echo "$(_alert warning)"; }
+
+_byby() {
+  cat <<_EOF_
+
+[     exit]
+
+_EOF_
+	unset ORIGIN DESTINATION IMGFILENAME IMGTITLE
+	exit
+}
+
+_menu () {
+
+	local readonly DELAY=2
+
+	while [[ $REPLY != x ]]; do
+		clear && echo ''
+  	cat <<_EOF_
+  Image manipulation menu:
+
+    0. minimize jpg
+
+    1. roTokyo image manipulation routine
+    2. blur image for web site
+    3. responsive images for web site
+
+    5. resize images
+
+    x. eXit
+
+_EOF_
+  	read -p "Enter selection [ExIT or 0-3] > "
+  	if [[ $REPLY =~ ^[0-9]$ || $REPLY =~ ^[?]$  || $REPLY =~ ^[x]$ ]]; then
+
+    	if [[ ${REPLY} == x ]]; then
+				_byby
+    	fi
+
+     	if [[ ${REPLY} == 0 ]]; then
+        echo ''; _f_alert_menu '  0. minimize jpg ...'; echo ''
+				_ask_for__img_file_name
+        _jpg_minimize
+    	fi
+
+    	if [[ ${REPLY} == 1 ]]; then
+        clear
+      	echo '';  _f_alert_menu '  1. roTokyo image manipulation routine '; echo ''
+				_ask_for__img_file_name
+        _roTokyo_image
+    	fi
+
+    	if [[ ${REPLY} == 2 ]]; then
+        clear
+      	echo '';  _f_alert_menu '  2. blur image for web site '; echo ''
+        _blur_image
+    	fi
+    	if [[ ${REPLY} == 3 ]]; then
+        clear
+      	echo '';  _f_alert_menu '  3. responsive images for web site '; echo ''
+				_ask_for__img_file_name
+			  _responsive_image
+    	fi
+
+    	if [[ ${REPLY} == 5 ]]; then
+        clear
+      	echo '';  _f_alert_menu '  5. resize images '; echo ''
+				_ask_for__img_file_name
+        _resize_image
+    	fi
+
+    	else
+        _f_alert_warning '  Invalid entry! Wait ...'
+      	sleep ${DELAY}
+  	fi
+	done
+  unset DELAY
+}
+
+_menu
+_byby
+
+
