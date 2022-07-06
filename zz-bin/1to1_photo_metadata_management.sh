@@ -7,31 +7,48 @@
 #***********************************
 #
 
-ORIGINIMGPATH="${HOME}/Desktop"
+ORIGINIMGPATH=$(pwd)
 
-read -p 'Insert file name ... :'
+read -p 'Insert file name ... :' READIMGFILENAME
 echo ''
 
-if [[ "${REPLY}" != "" && -f "${ORIGINIMGPATH}/${REPLY}" ]]; then
 
-  read -p 'Insert photo title (*): ...' TITLE
+  IMGFILENAME=$(basename -- "$READIMGFILENAME")
+  EXTENTION="${READIMGFILENAME##*.}"
+  FILENAME="${READIMGFILENAME%.*}"
+  FILEPATH=$(dirname "$READIMGFILENAME")
+
+if [[ "${IMGFILENAME}" != "" && -f "${ORIGINIMGPATH}/${READIMGFILENAME}" ]]; then
+
+  if [[ "${FILEPATH}" == "" ]]; then
+    ORIGINIMGPATH=$ORIGINIMGPATH
+    else
+      ORIGINIMGPATH="${ORIGINIMGPATH}/${FILEPATH}"
+  fi
+
+  read -p 'Insert photo title (*): ...' IMGTITLE
   echo ''
 
   # erase all image metadata
   # -ProfileDescription="sRGB IEC61966-2.1"
 
-  #  exiftool \
+  read -p 'Cancello i metadati? [y] ... :' READREPLY
+  echo ''  
+
+  if [[ "${READREPLY}" == y ]]; then
+    exiftool \
       -All= --ICC_Profile:All \
-      -TagsFromFile ${ORIGINIMGPATH}/${REPLY} \
+      -TagsFromFile ${ORIGINIMGPATH}/${IMGFILENAME} \
       -PhotoTitle \
       -ProfileDescription \
-    	-Make -Model \
-    	-ExposureTime \
+      -Make -Model \
+      -ExposureTime \
       -FNumber \
       -ISO \
       -FocalLength \
       -LensModel \
-      ${ORIGINIMGPATH}/${REPLY}
+      ${ORIGINIMGPATH}/${IMGFILENAME}
+  fi
 
 # write copyrights data
 # Modifiche:
@@ -44,7 +61,7 @@ if [[ "${REPLY}" != "" && -f "${ORIGINIMGPATH}/${REPLY}" ]]; then
 # -CreatorWorkURL="" \
 
   exiftool \
-    -PhotoTitle="${TITLE}" \
+    -PhotoTitle="${IMGTITLE}" \
     -Creator="Roberto Calesini" \
     -Rights="© 2013 Roberto Calesini. All rights reserved." \
   	-Artist="roTokyo" \
@@ -55,9 +72,9 @@ if [[ "${REPLY}" != "" && -f "${ORIGINIMGPATH}/${REPLY}" ]]; then
     -CopyrightsOwner="© 2013 Roberto Calesini aka roTokyo" \
     -UsageTermsStatement="For evaluation only, no reproduction is permitted without written permission by copyrights owner." \
     -CopyrightFlag=true \
-    ${ORIGINIMGPATH}/${REPLY}
+    ${ORIGINIMGPATH}/${IMGFILENAME}
 
-  exiftool -a -G1 -s -H ${ORIGINIMGPATH}/${REPLY}
+  exiftool -a -G1 -s -H ${ORIGINIMGPATH}/${IMGFILENAME}
 
 else
   echo ''

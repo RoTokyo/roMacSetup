@@ -17,11 +17,17 @@ function _write () {
 
 
 echo "---
+# &#039      per gli apostrofi
 published:   false
 title:       ''      #Important for SEO
 description: ''      #Important for SEO
 keywords:    ''      #Important for SEO
 author:      ''
+
+seo:
+  description: 
+  keywords:
+  excerpt:
 
 figure:
   image:     .jpg
@@ -51,8 +57,7 @@ location:
 
 sitemap:
   lastmod:
-  changefreq:
-  priority:
+  oridate:
   exclude:     #per ecludere: Yes
 ---
 
@@ -101,9 +106,9 @@ if [[ $REPLY ]]; then
       cd $DESTINATION
       sleep $DELAY
       echo ' '
-      read -p  " Do you want to open ${DRAFT_NAME}.md with ATOM? [yY]" -n 1
+      read -p  " Do you want to open ${DRAFT_NAME}.md with VS Code? [yY]" -n 1
       if [[ $REPLY =~ ^[Yy]$ ]]; then
-        atom "${DESTINATION}${DRAFT__DATE}-${DRAFT_NAME}${FILE_EXT}"; echo ''
+        code "${DESTINATION}${DRAFT__DATE}-${DRAFT_NAME}${FILE_EXT}"; echo ''
         echo ' '
         fi
       echo ' '

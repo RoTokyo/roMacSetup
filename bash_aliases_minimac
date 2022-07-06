@@ -20,8 +20,17 @@ alias gitpop='git push -u origin gh-pages'
 alias gitpom='git push -u origin master'
 alias gitlog='git log --pretty=oneline'
 
-# ****** Ruby Gems Commands **********
-alias unallgems='for i in `gem list --no-versions`; do gem uninstall -aIx $i; done'
+# ****** Ruby Gems Commands
+alias unallgems='for i in `gem list --no-versions`; do gem uninstall -aIx $i; done' 
+
+# ****** Python
+alias python='/usr/local/bin/python3'
+
+
+# ****** Web Photo Manager
+alias bin='cd $HOME/Documents/Projects/roMacSetup/zz-bin'
 
 alias meta='/Users/ro/Documents/Projects/roMacSetup/zz-bin/1to1_photo_metadata_management.sh'
 alias mets='/Users/ro/Documents/Projects/roMacSetup/zz-bin/1toN_photo_metadata_management.sh'
+
+alias mt='f() {exiftool -a -s -H -G1 "$1"; unset -f f; }; f'

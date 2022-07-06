@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+
+# ******************************
+# *                            *
+# *     Get network info       *
+# *                            *
+#*******************************
+#
+# https://apple.stackexchange.com/questions/191879/how-to-find-the-currently-connected-network-service-from-the-command-line
+
+#set -o errexit
+#set -o pipefail
+#set -o errtrace
+#set -o nounset
+#set -o xtrace
+
+readonly PROGNAME="$(basename $0)"
+readonly PROGPATH="$(dirname $0)"
+
+_main () {
+
+	unset THISNAME ORIGIN DESTINATION REPLY
+
+	set -u
+
+	local THISNAME='M/U mount Ext HD'
+	local ORIGIN=''
+	local DESTINATION=''
+	local DskDefNAME="Discoimmagini"
+
+	_f_title () {
+		cat <<_EOF_
+
+[    title] ================================
+            **      ${THISNAME}      **
+            **          function!         **
+            ================================
+
+_EOF_
+	}
+
+	_m_u_HD () {
+
+		local ExtHDName ChkREPLY ChkMOUNT 
+  	
+		_f_alert_input "Insert HD Name to Mount or Unmount"
+		read -p "$(_f_alert_input 'Default: Discoimmagini ⧳ ')" ExtHDName
+
+		if [[ -z ${ExtHDName} ]]; then
+			ExtHDName=${DskDefNAME}
+		fi
+
+		ChkDISK=$(diskutil list | grep ${ExtHDName} | awk '{print $(NF)}')
+
+  	if [[ -z ${ChkDISK} ]]; then # We got an empty string, meaning:
+			echo ''
+    	_f_alert_warning "Non ci sono dischi da montare o smontare"
+			_f_alert_warning "con quel nome"
+			else
+				ChkMOUNT=$(df | awk '{print $(NF)}' | grep -Ex "/Volumes/"${ChkDISK})
+				if [[ -z ${ChkMOUNT} ]]; then # We got an empty string, meaning: Montiamo Discoimmagini
+					_f_alert_info "Montiamo Discoimmagini"
+					diskutil mount ${ExtHDName}
+					else
+						_f_alert_info "Smontiamo Discoimmagini"
+						diskutil unmount ${ExtHDName}
+				fi
+  	fi
+
+	}
+
+	_alert () {
+
+		ORANGE=$(tput setaf 166)
+		RED=$(tput setaf 1)
+		RESET=$(tput sgr0)
+		TAN=$(tput setaf 3)
+
+	  if [[ "${1}" = "info" || "${1}" = "notice" ]];    then local COLOR=""; fi
+		if [[ "${1}" = "input" ]];   then local COLOR="${ORANGE}"; fi
+		if [[ "${1}" = "network" ]]; then local COLOR="${TAN}"; fi
+		if [[ "${1}" = "success" ]]; then local COLOR="${TAN}"; fi
+	  if [[ "${1}" = "warning" ]]; then local COLOR="${RED}"; fi
+
+	  echo -e "${COLOR}$(printf "[%9s]" "${1}") ${MESSAGE}${RESET}"
+	}
+
+
+	_f_alert_info ()      { local MESSAGE="${*}"; echo "$(_alert info)"; }
+	_f_alert_input ()     { local MESSAGE="${*}"; echo "$(_alert input)"; }
+	_f_alert_network ()   { local MESSAGE="${*}"; echo "$(_alert network)"; }
+	_f_alert_notice ()    { local MESSAGE="${*}"; echo "$(_alert notice)"; }
+	_f_alert_success ()   { local MESSAGE="${*}"; echo "$(_alert success)"; }
+	_f_alert_warning ()   { local MESSAGE="${*}"; echo "$(_alert warning)"; }
+
+	_safeExit() {
+		cat <<_EOF_
+
+[     exit] ================================
+            **     ${THISNAME}       **
+            **    function terminated!    **
+            ================================
+
+_EOF_
+		read -p "$(_f_alert_input 'Press any button to EXIT ⧳ ')" -n 1
+		clear
+	  # trap - INT TERM EXIT
+		# unset
+	  # exit 0 >/dev/null
+	}
+	_f_title
+	_m_u_HD
+	_safeExit
+
+}
+
+clear
+_main
