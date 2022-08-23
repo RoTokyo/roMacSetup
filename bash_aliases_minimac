@@ -33,4 +33,4 @@ alias bin='cd $HOME/Documents/Projects/roMacSetup/zz-bin'
 alias meta='/Users/ro/Documents/Projects/roMacSetup/zz-bin/1to1_photo_metadata_management.sh'
 alias mets='/Users/ro/Documents/Projects/roMacSetup/zz-bin/1toN_photo_metadata_management.sh'
 
-alias mt='f() {exiftool -a -s -H -G1 "$1"; unset -f f; }; f'
+alias mt='f() {exiftool -a -s -H -G1 "$@"; unset -f f; }; f'

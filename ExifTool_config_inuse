@@ -6,7 +6,7 @@
       Writable => 'string',
       WriteGroup => 'IFD0',
     },
-    0xd001 => {
+    0x013b => {
       Name => 'Artist',
       Writable => 'string',
       WriteGroup => 'IFD0',
