@@ -95,15 +95,15 @@ if [[ "${IMGFILENAME}" != "" && -f "${ORIGINIMGPATH}/${READIMGFILENAME}" ]]; the
 
   exiftool \
     -PhotoTitle="${IMGTITLE}" \
-    -Creator="Roberto Calesini" \
-    -Rights="© 2013 Roberto Calesini aka roTokyo. All rights reserved." \
-  	-Artist="roTokyo" \
-  	-ArtistCity="Tokyo" \
-  	-ArtistCountry="Japan" \
+    -ArtistName="Roberto Calesini aka roTokyo" \
+    -ArtistCity="Tokyo" \
+    -ArtistCountry="Japan" \
     -ArtistWorkURL="https://www.flickr.com/photos/rotokyo/albums" \
     -ArtistWorkEmail="rotokyo@icloud.com" \
+    -Artist="roTokyo" \
+    -Creator="Roberto Calesini aka roTokyo" \
+    -Rights="© 2013 Roberto Calesini aka roTokyo. All rights reserved." \
     -CopyrightsOwner="© 2013 Roberto Calesini aka roTokyo. All rights reserved." \
-    -UsageTermsStatement="For evaluation only, no reproduction is permitted without written permission by copyrights owner." \
     -CopyrightFlag=true \
     ${ORIGINIMGPATH}/${IMGFILENAME}
   

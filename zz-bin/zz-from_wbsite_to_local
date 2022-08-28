@@ -12,7 +12,7 @@ _f_rsync_file () {
 		--exclude '.DS_Store' \
 		--exclude 'Icon?' \
 		--exclude '*.sh' \
-		-zavh --no-perms --protect-args --dry-run;
+		-avzh --protect-args --dry-run;
   echo ''
 	echo "Dettagli: [    $@]"
   echo ''
@@ -23,7 +23,7 @@ _f_rsync_file () {
 	  	--exclude '.DS_Store' \
 	  	--exclude 'Icon?' \
 	  	--exclude '*.sh' \
-	  	-zavh --no-perms --protect-args;
+	  	-avzh --protect-args;
   fi
 }
 
@@ -83,7 +83,7 @@ _EOF_
         #
         ORIGIN="$HOME/Projects/001/wbsite/"
         DESTIN="$HOME/Sites"
-        cd $HOME/Projects/001/
+        # cd $HOME/Projects/008/
         #JEKYLL_ENV=development bundle exec jekyll build --config _config.yml
 				_f_rsync_file $ORIGIN $DESTIN
     	fi
@@ -135,14 +135,14 @@ _EOF_
 # Enjoy Japan! - roTokyo.test
     	if [[ $REPLY == 8 ]]; then
     	  clear
-    	  ORIGIN="$HOME/Projects/008/wbsite/"
-    	  DESTIN="$HOME/Sites/ilpoli"
+    	  ORIGIN="$HOME/Projects/008/ilpoli/"
+    	  DESTIN="$HOME/Sites"
     	  if [[ ! -d "${DESTIN}" ]]; then
     	    mkdir "${DESTIN}"
     	  fi
-    	  cd $HOME/Projects/008/
-    	  JEKYLL_ENV=development bundle exec jekyll build --config _config.yml
-    	  _f_rsync_file --delete $ORIGIN $DESTIN
+    	  #cd $HOME/Projects/008/
+    	  #JEKYLL_ENV=production bundle exec jekyll build --config _config.yml,_config_prod.yml
+    	  _f_rsync_file $ORIGIN $DESTIN
     	fi
 
 # Una struttura di prova

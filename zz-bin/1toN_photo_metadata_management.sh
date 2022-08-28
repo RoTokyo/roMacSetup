@@ -7,7 +7,7 @@
 #***********************************
 #
 
-ORIGINIMGPATH="${HOME}/Desktop/a"
+ORIGINIMGPATH="/Volumes/Discoimmagini/ZZ-images/WS-ilpoli"
 
 for file in $ORIGINIMGPATH/*.jpg; do
   if [[ -f ${file} ]]; then
@@ -15,40 +15,35 @@ for file in $ORIGINIMGPATH/*.jpg; do
     # erase all image metadata
     # -ProfileDescription="sRGB IEC61966-2.1"
 
-    exiftool \
-      -All= --ICC_Profile:All \
-      -TagsFromFile ${file} \
-      -PhotoTitle \
-      -Make -Model \
-      -ExposureTime \
-      -FNumber \
-      -ISO \
-      -FocalLength \
-      -LensModel \
-      ${file}
 
+    # write copyrights data
+    # 
     # -LensModel="Fujifilm XF 18-55mm F2.8-4 R LM OIS" \
     # -LensModel="Sigma 30mm F1.4 DC HSM Art" \
     # -LensModel="Nikon 105mm F2.8D Micro Nikkor" \
     # -LensModel="Sigma 105mm F2.8 DG Macro HSM" \
 
-    read -p 'Insert photo title (*): ...' TITLE
+    #
+    # write title
+    read -p 'Insert photo title (*): ...' IMGTITLE
     echo ''
-
+    #
+    # write metadata
     exiftool \
-      -PhotoTitle="${TITLE}" \
-      -Creator="Roberto Calesini" \
-      -Rights="© 2013 Roberto Calesini. All rights reserved." \
-      -Artist="roTokyo" \
+      -PhotoTitle="${IMGTITLE}" \
+      -ArtistName="Roberto Calesini aka roTokyo" \
       -ArtistCity="Tokyo" \
       -ArtistCountry="Japan" \
       -ArtistWorkURL="https://www.flickr.com/photos/rotokyo/albums" \
       -ArtistWorkEmail="rotokyo@icloud.com" \
-      -CopyrightsOwner="© 2013 Roberto Calesini aka roTokyo" \
-      -UsageTermsStatement="For evaluation only, no reproduction is permitted without written permission by copyrights owner." \
+      -Artist="roTokyo" \
+      -Creator="Roberto Calesini aka roTokyo" \
+      -Rights="© 2013 Roberto Calesini aka roTokyo. All rights reserved." \
+      -CopyrightsOwner="© 2013 Roberto Calesini aka roTokyo. All rights reserved." \
       -CopyrightFlag=true \
       ${file}
     echo "File: ${file} modified! ... "
+  
 
   else
     echo ''
