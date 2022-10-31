@@ -6,8 +6,8 @@
       Writable => 'string',
       WriteGroup => 'IFD0',
     },
-    0x013b => {
-      Name => 'Artist',
+    0xd001 => {
+      Name => 'ArtistName',
       Writable => 'string',
       WriteGroup => 'IFD0',
     },
@@ -36,13 +36,8 @@
       Writable => 'string',
       WriteGroup => 'IFD0',
     },
-    0xd007 => {
-      Name => 'UsageTermsStatement',
-      Writable => 'string',
-      WriteGroup => 'IFD0',
-    },
-    0xd008 => {
-      Name => 'CopyrightFlag',
+    0x013B => {
+      Name => 'Artist',
       Writable => 'string',
       WriteGroup => 'IFD0',
     },

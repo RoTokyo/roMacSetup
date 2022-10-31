@@ -45,7 +45,7 @@ if [[ "${IMGFILENAME}" != "" && -f "${ORIGINIMGPATH}/${READIMGFILENAME}" ]]; the
     exiftool \
       -All= --ICC_Profile:All \
       -TagsFromFile ${ORIGINIMGPATH}/${IMGFILENAME} \
-      -PhotoTitle \
+      -PhotoTitle -Title \
       -ProfileDescription \
       -Make -Model \
       -ExposureTime \
@@ -67,40 +67,17 @@ if [[ "${IMGFILENAME}" != "" && -f "${ORIGINIMGPATH}/${READIMGFILENAME}" ]]; the
 # -LensModel="Sigma 105mm F2.8 DG Macro HSM" \
 # -LensModel="Nikon AF Zoom-Nikkor 70-300mm f/4-5.6D ED"
 
-# -CreatorWorkEmail="roberto.calesini@gmail.com" \
-# -CreatorWorkURL="" \
-
-  CAMERA=$(exiftool -Make ${ORIGINIMGPATH}/${IMGFILENAME})
-
-  if [[  "${CAMERA}" =~ .*"SIGMA".* ]]; then
-    echo "1): Sigma 30mm F1.4 DC HSM Art"
-    echo "2): Sigma 105mm F2.8 DG Macro HSM"
-    echo ""
-    echo -n "Which lens model? [ 1 or 2]: "
-    read READREPLY
-    case $READREPLY in
-      [1] ) LENSMODEL="Sigma 30mm F1.4 DC HSM Art"
-        ;;
-      [2] ) LENSMODEL="Sigma 105mm F2.8 DG Macro HSM"
-        ;;
-      *) echo "Invalid input"
-        exit 0
-        ;;
-    esac
-    exiftool -LensModel="${LENSMODEL}" ${ORIGINIMGPATH}/${IMGFILENAME}
-  fi
-
   read -p 'Insert photo title (*): ...' IMGTITLE
   echo ''
 
   exiftool \
-    -PhotoTitle="${IMGTITLE}" \
-    -ArtistName="Roberto Calesini aka roTokyo" \
+    -Title="${IMGTITLE}" \
+    -Artist="roTokyo" \
     -ArtistCity="Tokyo" \
     -ArtistCountry="Japan" \
     -ArtistWorkURL="https://www.flickr.com/photos/rotokyo/albums" \
     -ArtistWorkEmail="rotokyo@icloud.com" \
-    -Artist="roTokyo" \
+    -UsageTerms="For evaluation only, do not reproduce, distribute, use, and or adapt any part of this work without written permission by the copyright owner." \
     -Creator="Roberto Calesini aka roTokyo" \
     -Rights="© 2013 Roberto Calesini aka roTokyo. All rights reserved." \
     -CopyrightsOwner="© 2013 Roberto Calesini aka roTokyo. All rights reserved." \
@@ -108,7 +85,6 @@ if [[ "${IMGFILENAME}" != "" && -f "${ORIGINIMGPATH}/${READIMGFILENAME}" ]]; the
     ${ORIGINIMGPATH}/${IMGFILENAME}
   
   
-
   exiftool -a -G1 -s -H -sort ${ORIGINIMGPATH}/${IMGFILENAME}
 
 else

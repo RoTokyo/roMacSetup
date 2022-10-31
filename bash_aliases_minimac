@@ -1,11 +1,21 @@
 # ********** In uso
 alias cls='clear'
-alias flush='dscacheutil -flushcache'                    # Flush dns cache
+alias flush='dscacheutil -flushcache; sudo killall -HUP mDNSResponder'                    # Flush dns cache
 alias reload='cls; source ~/.zshrc'               # Update bash profile
 alias dsclean='find . -type f -name .DS_Store -delete'   # Get rid of .DS_Store files recursively
 
-alias ss='sudo apachectl start'                          # Start server
-alias qs='sudo apachectl graceful-stop'                  # Stop server
+# Not more in use apple httpd 
+# alias ss='sudo apachectl start'                          # Start server
+# alias qs='sudo apachectl graceful-stop'                  # Stop server
+
+# Installed brew httpd
+# DocumentRoot is /usr/local/var/www
+# /usr/local/etc/httpd/httpd.conf port 8080
+# /usr/local/etc/httpd/extra/httpd-ssl.conf to 8443 so that httpd can run without sudo
+
+alias ss='brew services start httpd'
+alias qs='brew services stop httpd'
+
 
 alias show='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
 alias hide='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'
@@ -26,11 +36,21 @@ alias unallgems='for i in `gem list --no-versions`; do gem uninstall -aIx $i; do
 # ****** Python
 alias python='/usr/local/bin/python3'
 
-
 # ****** Web Photo Manager
 alias bin='cd $HOME/Documents/Projects/roMacSetup/zz-bin'
 
-alias meta='/Users/ro/Documents/Projects/roMacSetup/zz-bin/1to1_photo_metadata_management.sh'
-alias mets='/Users/ro/Documents/Projects/roMacSetup/zz-bin/1toN_photo_metadata_management.sh'
+alias meta='/Users/ro/Projects/roMacSetup/zz-bin/1to1_photo_metadata_management.sh'
+alias mets='/Users/ro//Projects/roMacSetup/zz-bin/1toN_photo_metadata_management.sh'
 
-alias mt='f() {exiftool -a -s -H -G1 "$@"; unset -f f; }; f'
+alias mta='f() {exiftool -a -s -H -G1 -sort "$@"; unset -f f; }; f'
+alias mt='f() {exiftool -sort "$@"; unset -f f; }; f'
+
+# ****** jekyll Commands *********
+alias jx='bundle exec jekyll clean; rm -rf .sass-cache'
+
+alias js='JEKYLL_ENV=development bundle exec jekyll serve --config _config.yml --incremental'
+alias jd='JEKYLL_ENV=development bundle exec jekyll serve --config _config.yml'
+alias jb='JEKYLL_ENV=production  bundle exec jekyll build --config _config.yml,_config_prod.yml --incremental'
+alias jp='JEKYLL_ENV=production  bundle exec jekyll serve --config _config.yml,_config_prod.yml'
+
+alias draft='j && cd zz-bin && ./zz-draft'

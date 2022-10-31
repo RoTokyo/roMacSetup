@@ -3,9 +3,9 @@
 read -p "    [To exit press any key ... 1 to go] > "
 if [[ $REPLY =~ ^[1] ]]; then
 
-ORIGINIMGPATH="${HOME}/Desktop/a"
-DESTBLUR="${ORIGINIMGPATH}/blur"
-DESTTHUMB="${ORIGINIMGPATH}/thumb"
+ORIGINIMGPATH="//Users/ro/Desktop/lav/ori"
+DESTBLUR="/Users/ro/Desktop/lav/blur"
+DESTTHUMB="/Users/ro/Desktop/lav/thumbs"
 
   for file in $ORIGINIMGPATH/*.jpg; do
     # NOTA:
@@ -13,35 +13,35 @@ DESTTHUMB="${ORIGINIMGPATH}/thumb"
     #
     if [[ -f ${file} ]]; then
 
-    exiftool \
-      -All= --ICC_Profile:All \
-      -TagsFromFile ${file} \
-      -PhotoTitle \
-      -Make -Model \
-      -ExposureTime \
-      -FNumber \
-      -ISO \
-      -FocalLength \
-      -LensModel \
-      ${file}
+    #exiftool \
+    #  -All= --ICC_Profile:All \
+    #  -TagsFromFile ${file} \
+    #  -PhotoTitle \
+    #  -Make -Model \
+    #  -ExposureTime \
+    #  -FNumber \
+    #  -ISO \
+    #  -FocalLength \
+    #  -LensModel \
+    #  ${file}
+    #
+    #read -p 'Insert photo title (*): ...' TITLE
+    #echo ''
 
-    read -p 'Insert photo title (*): ...' TITLE
-    echo ''
-
+    # -PhotoTitle="${TITLE}" \
     exiftool \
-      -PhotoTitle="${TITLE}" \
-      -Creator="Roberto Calesini" \
-      -Rights="© 2013 Roberto Calesini. All rights reserved." \
-      -Artist="roTokyo" \
+      -ArtistName="Roberto Calesini aka roTokyo" \
       -ArtistCity="Tokyo" \
       -ArtistCountry="Japan" \
       -ArtistWorkURL="https://www.flickr.com/photos/rotokyo/albums" \
       -ArtistWorkEmail="rotokyo@icloud.com" \
-      -CopyrightsOwner="© 2013 Roberto Calesini aka roTokyo" \
-      -UsageTermsStatement="For evaluation only, no reproduction is permitted without written permission by copyrights owner." \
+      -Artist="roTokyo" \
+      -Creator="Roberto Calesini aka roTokyo" \
+      -Rights="© 2013 Roberto Calesini aka roTokyo. All rights reserved." \
+      -CopyrightsOwner="© 2013 Roberto Calesini aka roTokyo. All rights reserved." \
       -CopyrightFlag=true \
       ${file}
-    echo "File: ${file} modified! ... "
+    #echo "File: ${file} modified! ... "
 
 
       # NOTA: 
@@ -74,3 +74,5 @@ DESTTHUMB="${ORIGINIMGPATH}/thumb"
 else
   echo "Stop"
 fi
+
+
