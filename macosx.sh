@@ -40,7 +40,7 @@ _main_code () {
     3. Install Homebrew
     4. Developer Tools : git node ruby ...
     5. Cask & Application
-    6. Atom & Packages
+    6. vsCodium & Packages
     7. Install dot files & Extra
 
     A. All
