@@ -1,21 +1,15 @@
-# ********** Path
-export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
-export PATH="/usr/local/opt/sqlite/bin:$PATH"
-export PATH="/usr/local/sbin:$PATH"
+# ********** rBenv & Ruby
+eval "$(rbenv init - zsh)"
 
+# ********** NPM
 export NVM_DIR="$HOME/.nvm"
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+  [ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"
 
-export HOMEBREW_NO_INSTALL_CLEANUP=TRUE
+# ********** Brew
+eval "$(/usr/local/bin/brew shellenv)"
+export HOMEBREW_NO_AUTO_UPDATE=1
 
-# RUBY Installation procedure 
-# https://www.moncefbelyamani.com/how-to-install-xcode-homebrew-git-rvm-ruby-on-mac/
-source /usr/local/opt/chruby/share/chruby/chruby.sh
-source /usr/local/opt/chruby/share/chruby/auto.sh
-chruby ruby-3.1.2
-
-# ********** Caricamento Impostazioni 
+# ********** Caricamento Impostazioni
 for file in ~/.{bash_prompt,bash_aliases}; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file";
 done
