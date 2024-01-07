@@ -11,7 +11,7 @@ setopt extendedglob
 source .zprofile
 
 # ********** Caricamento Impostazioni da bash
-for file in ~/.{bash_prompt,bash_aliases}; do
+for file in ~/.{bash_prompt,bash_aliases,bash_export}; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file";
 done
 unset file
