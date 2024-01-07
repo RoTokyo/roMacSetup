@@ -2,6 +2,8 @@
 HISTFILE='$HOME/.zsh_history'
 HISTSIZE=2000
 SAVEHIST=$HISTSIZE
+# export HISTFILESIZE="${HISTSIZE}";
+# export HISTCONTROL='ignoreboth';
 # HISTORY_IGNORE='l|l *|ls|ls *|cd|cd ..*|cd -|z *|pwd|exit|reload|'
 setopt hist_ignore_all_dups
 setopt hist_ignore_space
